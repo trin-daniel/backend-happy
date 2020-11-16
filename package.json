@@ -7,5 +7,8 @@
   },
   "keywords": [],
   "author": "Carlos Daniel",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.0.0"
+  }
 }
