@@ -1,4 +1,4 @@
-import { AddOrphanage } from 'domain/use-cases/orphanage/add-orphanage'
+import { AddOrphanage } from '../../../../domain/use-cases/orphanage/add-orphanage'
 import { badRequest, ok } from '../../../helpers/http-helpers'
 import { Validation } from '../../../protocols/validation'
 
