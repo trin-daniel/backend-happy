@@ -13,7 +13,10 @@ export class AddOrphanageController {
     if (error) {
       return badRequest(error)
     }
-    await this.addOrphanage.add(req.body)
-    return Promise.resolve(null)
+    const orphanage = await this.addOrphanage.add(req.body)
+    return {
+      statusCode: 200,
+      body: orphanage
+    }
   }
 }
