@@ -6,7 +6,13 @@ export class AddOrphanageController {
   ) {}
 
   async handle (req: any): Promise<any> {
-    this.validation.validate(req.body)
+    const error = this.validation.validate(req.body)
+    if (error) {
+      return {
+        statusCode: 400,
+        body: error
+      }
+    }
     return Promise.resolve(null)
   }
 }
