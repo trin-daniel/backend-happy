@@ -9,7 +9,7 @@
     "strict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "baseUrl": "./",
+    "baseUrl": "src",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
