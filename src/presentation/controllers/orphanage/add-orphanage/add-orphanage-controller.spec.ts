@@ -41,4 +41,12 @@ describe('Add Orphanage Controller', () => {
     await sut.handle(request)
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
+
+  test('Should be able to return an error if validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    jest.spyOn(validationSpy, 'validate').mockReturnValueOnce(new Error())
+    const request = httpRequest
+    const response = await sut.handle(request)
+    expect(response).toEqual({ statusCode: 400, body: new Error() })
+  })
 })
