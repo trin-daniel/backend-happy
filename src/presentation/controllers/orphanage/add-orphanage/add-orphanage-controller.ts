@@ -1,5 +1,5 @@
 import { AddOrphanage } from 'domain/use-cases/orphanage/add-orphanage'
-import { badRequest } from '../../../helpers/http-helpers'
+import { badRequest, ok } from '../../../helpers/http-helpers'
 import { Validation } from '../../../protocols/validation'
 
 export class AddOrphanageController {
@@ -14,9 +14,6 @@ export class AddOrphanageController {
       return badRequest(error)
     }
     const orphanage = await this.addOrphanage.add(req.body)
-    return {
-      statusCode: 200,
-      body: orphanage
-    }
+    return ok(orphanage)
   }
 }

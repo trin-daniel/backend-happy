@@ -1,6 +1,6 @@
 import { AddOrphanageController } from './add-orphanage-controller'
 import { Validation } from '../../../protocols/validation'
-import { badRequest } from '../../../helpers/http-helpers'
+import { badRequest, ok } from '../../../helpers/http-helpers'
 import { Orphanage } from '../../../../domain/models/orphanage'
 import { AddOrphanage, AddOrphanageArgs } from '../../../../domain/use-cases/orphanage/add-orphanage'
 import { address, internet, random } from 'faker/locale/pt_BR'
@@ -77,6 +77,6 @@ describe('Add Orphanage Controller', () => {
     const { sut } = makeSut()
     const request = httpRequest
     const response = await sut.handle(request)
-    expect(response).toEqual({ statusCode: 200, body: mockOrphanage })
+    expect(response).toEqual(ok(mockOrphanage))
   })
 })
