@@ -1,6 +1,6 @@
 import { AddOrphanageController } from './add-orphanage-controller'
 import { Validation } from '../../../protocols/validation'
-import { badRequest, ok } from '../../../helpers/http-helpers'
+import { badRequest, ok, serverError } from '../../../helpers/http-helpers'
 import { Orphanage } from '../../../../domain/models/orphanage'
 import { AddOrphanage, AddOrphanageArgs } from '../../../../domain/use-cases/orphanage/add-orphanage'
 import { address, internet, random } from 'faker/locale/pt_BR'
@@ -78,5 +78,13 @@ describe('Add Orphanage Controller', () => {
     const request = httpRequest
     const response = await sut.handle(request)
     expect(response).toEqual(ok(mockOrphanage))
+  })
+
+  test('Should be able to return an error of type 500 if AddOrphanage fails', async () => {
+    const { sut, addOrphanageSpy } = makeSut()
+    jest.spyOn(addOrphanageSpy, 'add').mockReturnValueOnce(Promise.reject(new Error()))
+    const request = httpRequest
+    const error = await sut.handle(request)
+    expect(error).toEqual(serverError(new Error()))
   })
 })
