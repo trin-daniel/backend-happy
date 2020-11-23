@@ -25,10 +25,17 @@ const mockValidation = (): Validation => {
   return new ValidationSpy()
 }
 
+type SutTypes = { sut: AddOrphanageController, validationSpy: Validation }
+
+const makeSut = (): SutTypes => {
+  const validationSpy = mockValidation()
+  const sut = new AddOrphanageController(validationSpy)
+  return { sut, validationSpy }
+}
+
 describe('Add Orphanage Controller', () => {
   test('Should be able to call the validation with the correct values', () => {
-    const validationSpy = mockValidation()
-    const sut = new AddOrphanageController(validationSpy)
+    const { sut, validationSpy } = makeSut()
     const validateSpy = jest.spyOn(validationSpy, 'validate')
     const request = httpRequest
     sut.handle(request)
