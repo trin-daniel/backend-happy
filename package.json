@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "API Rest Full Happy",
   "scripts": {
-    "test": "jest --passWithNoTests --runInBand --silent --noStackTrace"
+    "test": "jest --passWithNoTests --runInBand --silent --noStackTrace",
+    "test:staged": "npm run test -- --findRelatedTests"
   },
   "keywords": [],
   "author": "Carlos Daniel",
