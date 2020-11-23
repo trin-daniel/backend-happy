@@ -1,7 +1,7 @@
 import { AddOrphanageController } from './add-orphanage-controller'
 import { Validation } from '../../../protocols/validation'
 import { address, internet, random } from 'faker/locale/pt_BR'
-
+import { badRequest } from '../../../helpers/http-helpers'
 const httpRequest = {
   body:
    {
@@ -47,6 +47,6 @@ describe('Add Orphanage Controller', () => {
     jest.spyOn(validationSpy, 'validate').mockReturnValueOnce(new Error())
     const request = httpRequest
     const response = await sut.handle(request)
-    expect(response).toEqual({ statusCode: 400, body: new Error() })
+    expect(response).toEqual(badRequest(new Error()))
   })
 })
