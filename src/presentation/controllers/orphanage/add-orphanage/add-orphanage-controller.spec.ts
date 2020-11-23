@@ -34,11 +34,11 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Add Orphanage Controller', () => {
-  test('Should be able to call the validation with the correct values', () => {
+  test('Should be able to call the validation with the correct values', async () => {
     const { sut, validationSpy } = makeSut()
     const validateSpy = jest.spyOn(validationSpy, 'validate')
     const request = httpRequest
-    sut.handle(request)
+    await sut.handle(request)
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 })

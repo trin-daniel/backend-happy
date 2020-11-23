@@ -5,7 +5,8 @@ export class AddOrphanageController {
     private readonly validation: Validation
   ) {}
 
-  handle (req: any): any {
+  async handle (req: any): Promise<any> {
     this.validation.validate(req.body)
+    return Promise.resolve(null)
   }
 }
