@@ -1,9 +1,9 @@
 import { AddOrphanageController } from './add-orphanage-controller'
 import { Validation } from '../../../protocols/validation'
-import { address, internet, random } from 'faker/locale/pt_BR'
 import { badRequest } from '../../../helpers/http-helpers'
 import { Orphanage } from '../../../../domain/models/orphanage'
 import { AddOrphanage, AddOrphanageArgs } from '../../../../domain/use-cases/orphanage/add-orphanage'
+import { address, internet, random } from 'faker/locale/pt_BR'
 
 const httpRequest = {
   body:
@@ -71,5 +71,12 @@ describe('Add Orphanage Controller', () => {
     const request = httpRequest
     await sut.handle(request)
     expect(addSpy).toHaveBeenCalledWith(request.body)
+  })
+
+  test('Should be able to return a new record if AddOrphanage is successful', async () => {
+    const { sut } = makeSut()
+    const request = httpRequest
+    const response = await sut.handle(request)
+    expect(response).toEqual({ statusCode: 200, body: mockOrphanage })
   })
 })
