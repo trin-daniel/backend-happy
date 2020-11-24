@@ -1,6 +1,6 @@
 import { DbAddOrphanage } from '@data/use-cases/orphanage/add-orphanage/db-add-orphanage'
 import { AddOrphanageArgs, AddOrphanageRepository, Orphanage } from '@data/use-cases/orphanage/add-orphanage/db-add-orphanage-protocols'
-import { random, internet, address } from 'faker/locale/pt_BR'
+import { random, internet, address, time } from 'faker/locale/pt_BR'
 
 const orphanageArgs: AddOrphanageArgs = {
   name: internet.userName(),
@@ -8,8 +8,8 @@ const orphanageArgs: AddOrphanageArgs = {
   longitude: Number(address.longitude()),
   about: random.words(5),
   instructions: random.words(5),
-  opening_hours: new Date(),
-  closing_time: new Date(),
+  opening_hours: time.recent(),
+  closing_time: time.recent(),
   open_on_weekends: random.boolean()
 }
 
