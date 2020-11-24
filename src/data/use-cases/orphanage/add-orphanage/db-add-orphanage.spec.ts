@@ -43,4 +43,11 @@ describe('DbAddOrphanage Usecase', () => {
     await sut.add(data)
     expect(addSpy).toHaveBeenCalledWith(data)
   })
+
+  test('Should be able to return a new record if successful', async () => {
+    const { sut } = makeSut()
+    const data = orphanageArgs
+    const orphanage = await sut.add(data)
+    expect(orphanage).toEqual(mockOrphanage)
+  })
 })
