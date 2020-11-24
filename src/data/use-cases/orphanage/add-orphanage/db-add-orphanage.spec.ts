@@ -1,7 +1,5 @@
-import { AddOrphanageRepository } from '@data/protocols/add-orphanage-repository'
 import { DbAddOrphanage } from '@data/use-cases/orphanage/add-orphanage/db-add-orphanage'
-import { Orphanage } from '@domain/models/orphanage'
-import { AddOrphanageArgs } from '@domain/use-cases/orphanage/add-orphanage'
+import { AddOrphanageArgs, AddOrphanageRepository, Orphanage } from '@data/use-cases/orphanage/add-orphanage/db-add-orphanage-protocols'
 import { random, internet, address } from 'faker/locale/pt_BR'
 
 const orphanageArgs: AddOrphanageArgs = {

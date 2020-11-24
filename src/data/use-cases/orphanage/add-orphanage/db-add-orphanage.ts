@@ -1,6 +1,4 @@
-import { AddOrphanageRepository } from '@data/protocols/add-orphanage-repository'
-import { Orphanage } from '@domain/models/orphanage'
-import { AddOrphanage, AddOrphanageArgs } from '@domain/use-cases/orphanage/add-orphanage'
+import { AddOrphanage, AddOrphanageArgs, AddOrphanageRepository, Orphanage } from '@data/use-cases/orphanage/add-orphanage/db-add-orphanage-protocols'
 
 export class DbAddOrphanage implements AddOrphanage {
   constructor (
