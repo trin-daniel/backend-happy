@@ -1,4 +1,4 @@
-import { Orphanage } from '../../models/orphanage'
+import { Orphanage } from '@domain/models/orphanage'
 
 export type AddOrphanageArgs = {
   name: string,

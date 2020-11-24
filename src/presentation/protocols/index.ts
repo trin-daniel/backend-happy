@@ -1,3 +1,3 @@
-export * from './http'
-export * from './validation'
-export * from './controller'
+export * from '@presentation/protocols/http'
+export * from '@presentation/protocols/validation'
+export * from '@presentation/protocols/controller'

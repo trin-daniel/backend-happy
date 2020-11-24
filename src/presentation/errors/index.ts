@@ -1,1 +1,1 @@
-export * from './server-error'
+export * from '@presentation/errors/server-error'

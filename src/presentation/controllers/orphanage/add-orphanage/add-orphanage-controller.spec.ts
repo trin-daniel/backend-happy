@@ -1,6 +1,6 @@
-import { AddOrphanageController } from './add-orphanage-controller'
-import { AddOrphanage, AddOrphanageArgs, HttpRequest, Validation, Orphanage } from './add-orphanage-controller-protocols'
-import { badRequest, ok, serverError } from '../../../helpers/http-helpers'
+import { AddOrphanageController } from '@presentation/controllers/orphanage/add-orphanage/add-orphanage-controller'
+import { AddOrphanage, AddOrphanageArgs, HttpRequest, Validation, Orphanage } from '@presentation/controllers/orphanage/add-orphanage/add-orphanage-controller-protocols'
+import { badRequest, ok, serverError } from '@presentation/helpers/http-helpers'
 import { address, internet, random } from 'faker/locale/pt_BR'
 
 const httpRequest: HttpRequest<AddOrphanageArgs> = {
