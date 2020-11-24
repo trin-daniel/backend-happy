@@ -20,4 +20,11 @@ describe('Time Validation', () => {
     const error = sut.validate({ field: time.recent() })
     expect(error).toEqual(new InvalidParamError('field'))
   })
+
+  test('Should be able to return null if validation is successful', () => {
+    const timeValidatorSpy = mockTimeValidator()
+    const sut = new TimeValidation('field', timeValidatorSpy)
+    const error = sut.validate({ field: time.recent() })
+    expect(error).toBeNull()
+  })
 })
