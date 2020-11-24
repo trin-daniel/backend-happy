@@ -50,4 +50,12 @@ describe('DbAddOrphanage Usecase', () => {
     const orphanage = await sut.add(data)
     expect(orphanage).toEqual(mockOrphanage)
   })
+
+  test('Should be able to pass the error on to the caller in case of an exception', async () => {
+    const { sut, addOrphanageRepositorySpy } = makeSut()
+    jest.spyOn(addOrphanageRepositorySpy, 'add').mockReturnValueOnce(Promise.reject(new Error()))
+    const data = orphanageArgs
+    const promise = sut.add(data)
+    await expect(promise).rejects.toThrow()
+  })
 })
