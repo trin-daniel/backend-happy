@@ -12,10 +12,20 @@ const mockCoordinateValidator = (): CoordinateValidator => {
   return new CoordinateValidatorSpy()
 }
 
+type SutTypes = { sut: LatitudeValidation, coordinateValidatorSpy: CoordinateValidator}
+
+const makeSut = (): SutTypes => {
+  const coordinateValidatorSpy = mockCoordinateValidator()
+  const sut = new LatitudeValidation('field', coordinateValidatorSpy)
+  return {
+    sut,
+    coordinateValidatorSpy
+  }
+}
+
 describe('Latitude Validation', () => {
   test('Should be able to return a InvalidParamError if validation fails', () => {
-    const coordinateValidatorSpy = mockCoordinateValidator()
-    const sut = new LatitudeValidation('field', coordinateValidatorSpy)
+    const { sut, coordinateValidatorSpy } = makeSut()
     jest.spyOn(coordinateValidatorSpy, 'isCoordinate').mockReturnValueOnce(false)
     const data = { field: Number(address.latitude()) }
     const error = sut.validate(data)
