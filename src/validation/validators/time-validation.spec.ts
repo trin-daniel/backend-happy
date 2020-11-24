@@ -12,18 +12,27 @@ const mockTimeValidator = (): TimeValidator => {
   return new TimeValidatorSpy()
 }
 
+type SutTypes = { sut: TimeValidation, timeValidatorSpy: TimeValidator}
+
+const makeSut = (): SutTypes => {
+  const timeValidatorSpy = mockTimeValidator()
+  const sut = new TimeValidation('field', timeValidatorSpy)
+  return {
+    sut,
+    timeValidatorSpy
+  }
+}
+
 describe('Time Validation', () => {
   test('Should be able to return a InvalidParamError if validation fails', () => {
-    const timeValidatorSpy = mockTimeValidator()
-    const sut = new TimeValidation('field', timeValidatorSpy)
+    const { sut, timeValidatorSpy } = makeSut()
     jest.spyOn(timeValidatorSpy, 'isTime').mockReturnValueOnce(false)
     const error = sut.validate({ field: time.recent() })
     expect(error).toEqual(new InvalidParamError('field'))
   })
 
   test('Should be able to return null if validation is successful', () => {
-    const timeValidatorSpy = mockTimeValidator()
-    const sut = new TimeValidation('field', timeValidatorSpy)
+    const { sut } = makeSut()
     const error = sut.validate({ field: time.recent() })
     expect(error).toBeNull()
   })
