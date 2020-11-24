@@ -13,5 +13,6 @@ export class LongitudeValidation implements Validation {
     if (!isCoordinate) {
       return new InvalidParamError(this.fieldName)
     }
+    return null
   }
 }
