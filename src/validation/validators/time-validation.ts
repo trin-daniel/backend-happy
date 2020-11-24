@@ -13,5 +13,6 @@ export class TimeValidation implements Validation {
     if (!isTime) {
       return new InvalidParamError(this.fieldName)
     }
+    return null
   }
 }
