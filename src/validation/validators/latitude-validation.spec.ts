@@ -31,4 +31,11 @@ describe('Latitude Validation', () => {
     const error = sut.validate(data)
     expect(error).toEqual(new InvalidParamError('field'))
   })
+
+  test('Should be able to return null if validation is successful', () => {
+    const { sut } = makeSut()
+    const data = { field: Number(address.latitude()) }
+    const error = sut.validate(data)
+    expect(error).toBeNull()
+  })
 })
