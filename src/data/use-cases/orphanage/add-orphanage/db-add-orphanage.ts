@@ -6,7 +6,7 @@ export class DbAddOrphanage implements AddOrphanage {
   ) {}
 
   async add (data: AddOrphanageArgs): Promise<Orphanage> {
-    await this.addOrphanageRepository.add(data)
-    return Promise.resolve(null)
+    const orphanage = await this.addOrphanageRepository.add(data)
+    return orphanage
   }
 }
