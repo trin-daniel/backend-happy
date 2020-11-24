@@ -9,6 +9,7 @@
     "strict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
+    "strictNullChecks": false,
     "baseUrl": "src",
     "paths": {
       "@domain/*":["domain/*"],
