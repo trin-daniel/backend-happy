@@ -1,11 +1,9 @@
 import { AddOrphanageController } from './add-orphanage-controller'
-import { Validation } from '../../../protocols/validation'
+import { AddOrphanage, AddOrphanageArgs, HttpRequest, Validation, Orphanage } from './add-orphanage-controller-protocols'
 import { badRequest, ok, serverError } from '../../../helpers/http-helpers'
-import { Orphanage } from '../../../../domain/models/orphanage'
-import { AddOrphanage, AddOrphanageArgs } from '../../../../domain/use-cases/orphanage/add-orphanage'
 import { address, internet, random } from 'faker/locale/pt_BR'
 
-const httpRequest = {
+const httpRequest: HttpRequest<AddOrphanageArgs> = {
   body:
    {
      name: internet.userName(),
