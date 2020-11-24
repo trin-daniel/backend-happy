@@ -10,6 +10,14 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "baseUrl": "src",
+    "paths": {
+      "@domain/*":["domain/*"],
+      "@data/*":["data/*"],
+      "@presentation/*":["presentation/*"],
+      "@validation/*":["validation/*"],
+      "@infra/*":["domain/*"],
+      "@main/*":["main/*"]
+    },
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
