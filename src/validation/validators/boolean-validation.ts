@@ -11,5 +11,6 @@ export class BooleanValidation implements Validation {
     if (typeof value !== 'boolean') {
       return new InvalidParamError(this.fieldName)
     }
+    return null
   }
 }
