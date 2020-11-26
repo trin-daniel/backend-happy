@@ -24,4 +24,11 @@ describe('Coordinate Validator Adapter', () => {
     const isCoordinate = sut.isCoordinate(value)
     expect(isCoordinate).toBe(false)
   })
+
+  test('Should be able to return true if the validator returns true', () => {
+    const sut = new CoordinateValidatorAdapter()
+    const value = Number(address.latitude())
+    const isCoordinate = sut.isCoordinate(value)
+    expect(isCoordinate).toBe(true)
+  })
 })
