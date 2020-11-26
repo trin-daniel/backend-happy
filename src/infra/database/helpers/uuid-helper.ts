@@ -5,3 +5,4 @@ export class UUIDHelper {
     return v4()
   }
 }
+export const uuid = new UUIDHelper()
