@@ -19,4 +19,12 @@ describe('Time Validator Adapter', () => {
     sut.isTime(value)
     expect(isDate).toHaveBeenCalledWith(date)
   })
+
+  test('Should be able to return false if the validator returns false', () => {
+    const sut = new TimeValidatorAdapter()
+    jest.spyOn(moment, 'isDate').mockReturnValueOnce(false)
+    const value = time.recent()
+    const isTime = sut.isTime(value)
+    expect(isTime).toBe(false)
+  })
 })
