@@ -27,4 +27,11 @@ describe('Time Validator Adapter', () => {
     const isTime = sut.isTime(value)
     expect(isTime).toBe(false)
   })
+
+  test('Should be able to return true if the validator returns true', () => {
+    const sut = new TimeValidatorAdapter()
+    const value = time.recent()
+    const isTime = sut.isTime(value)
+    expect(isTime).toBe(true)
+  })
 })
