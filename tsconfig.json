@@ -16,7 +16,7 @@
       "@data/*":["data/*"],
       "@presentation/*":["presentation/*"],
       "@validation/*":["validation/*"],
-      "@infra/*":["domain/*"],
+      "@infra/*":["infra/*"],
       "@main/*":["main/*"]
     },
     "esModuleInterop": true,
