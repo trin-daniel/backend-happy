@@ -1,8 +1,8 @@
-import app from '../config/app'
+import app from '@main/config/app'
 import request from 'supertest'
 import { internet } from 'faker'
 
-describe('Body Parser', () => {
+describe('Body Parser Middleware', () => {
   test('Should be able to understand the JSON format', async () => {
     app.post('/test_body_parser', (req, res) => {
       res.send(req.body)
