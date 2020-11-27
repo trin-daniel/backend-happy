@@ -1,16 +1,16 @@
 import { InvalidParamError } from '@presentation/errors'
 import { Validation } from '@presentation/protocols'
-import { TimeValidator } from '@validation/protocols/time-validator'
+import { DateValidator } from '@validation/protocols/date-validator'
 
 export class TimeValidation implements Validation {
   constructor (
     private readonly fieldName: string,
-    private readonly timeValidator: TimeValidator
+    private readonly timeValidator: DateValidator
   ) {}
 
   validate (input: object): Error | null {
-    const isTime = this.timeValidator.isTime(input[this.fieldName])
-    if (!isTime) {
+    const isDate = this.timeValidator.isDate(input[this.fieldName])
+    if (!isDate) {
       return new InvalidParamError(this.fieldName)
     }
     return null

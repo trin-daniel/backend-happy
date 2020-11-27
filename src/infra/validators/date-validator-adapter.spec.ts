@@ -1,4 +1,4 @@
-import { TimeValidatorAdapter } from '@infra/validators/time-validator-adapter'
+import { DateValidatorAdapter } from '@infra/validators/date-validator-adapter'
 import { time } from 'faker'
 import moment from 'moment'
 
@@ -10,28 +10,28 @@ jest.mock('moment', () => {
   }
 })
 
-describe('Time Validator Adapter', () => {
+describe('Date Validator Adapter', () => {
   test('Should be able to call the validator with the correct value', () => {
-    const sut = new TimeValidatorAdapter()
-    const isDate = jest.spyOn(moment, 'isDate')
+    const sut = new DateValidatorAdapter()
+    const isDateSpy = jest.spyOn(moment, 'isDate')
     const value = time.recent()
     const date = new Date(value)
-    sut.isTime(value)
-    expect(isDate).toHaveBeenCalledWith(date)
+    sut.isDate(value)
+    expect(isDateSpy).toHaveBeenCalledWith(date)
   })
 
   test('Should be able to return false if the validator returns false', () => {
-    const sut = new TimeValidatorAdapter()
+    const sut = new DateValidatorAdapter()
     jest.spyOn(moment, 'isDate').mockReturnValueOnce(false)
     const value = time.recent()
-    const isTime = sut.isTime(value)
-    expect(isTime).toBe(false)
+    const isDate = sut.isDate(value)
+    expect(isDate).toBe(false)
   })
 
   test('Should be able to return true if the validator returns true', () => {
-    const sut = new TimeValidatorAdapter()
+    const sut = new DateValidatorAdapter()
     const value = time.recent()
-    const isTime = sut.isTime(value)
-    expect(isTime).toBe(true)
+    const isDate = sut.isDate(value)
+    expect(isDate).toBe(true)
   })
 })
