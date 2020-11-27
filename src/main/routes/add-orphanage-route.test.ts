@@ -1,8 +1,8 @@
 import { AddOrphanageArgs } from '@domain/use-cases/orphanage/add-orphanage'
+import { SqlHelper } from '@infra/database/helpers/sql-helper'
 import app from '@main/config/app'
 import request from 'supertest'
 import { random, internet, address, time } from 'faker/locale/pt_BR'
-import { SqlHelper } from '@infra/database/helpers/sql-helper'
 
 const inputs: AddOrphanageArgs = {
   name: internet.userName(),
