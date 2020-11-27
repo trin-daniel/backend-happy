@@ -1,6 +1,4 @@
-import { BodyParserMiddleware } from '@main/middlewares/body-parser-middleware'
-import { ContentTypeMiddleware } from '@main/middlewares/content-type-middleware'
-import { CorsMiddleware } from '@main/middlewares/cors-middleware'
+import { BodyParserMiddleware, CorsMiddleware, ContentTypeMiddleware } from '@main/middlewares'
 import { Express } from 'express'
 
 export const setupMiddlewares = (app: Express): void => {
