@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@presentation/errors'
-import { TimeValidation } from '@validation/validators/date-validation'
+import { DateValidation } from '@validation/validators/date-validation'
 import { DateValidator } from '@validation/protocols/date-validator'
 import { time } from 'faker'
 
@@ -12,18 +12,18 @@ const mockDateValidator = (): DateValidator => {
   return new DateValidatorSpy()
 }
 
-type SutTypes = { sut: TimeValidation, dateValidatorSpy: DateValidator}
+type SutTypes = { sut: DateValidation, dateValidatorSpy: DateValidator}
 
 const makeSut = (): SutTypes => {
   const dateValidatorSpy = mockDateValidator()
-  const sut = new TimeValidation('field', dateValidatorSpy)
+  const sut = new DateValidation('field', dateValidatorSpy)
   return {
     sut,
     dateValidatorSpy
   }
 }
 
-describe('Time Validation', () => {
+describe('Date Validation', () => {
   test('Should be able to return a InvalidParamError if validation fails', () => {
     const { sut, dateValidatorSpy } = makeSut()
     jest.spyOn(dateValidatorSpy, 'isDate').mockReturnValueOnce(false)

@@ -2,7 +2,7 @@ import { InvalidParamError } from '@presentation/errors'
 import { Validation } from '@presentation/protocols'
 import { CoordinateValidator } from '@validation/protocols/coordinate-validator'
 
-export class LongitudeValidation implements Validation {
+export class CoordinateValidation implements Validation {
   constructor (
     private readonly fieldName: string,
     private readonly coordinateValidator: CoordinateValidator

@@ -1,6 +1,6 @@
 import { InvalidParamError } from '@presentation/errors'
 import { CoordinateValidator } from '@validation/protocols/coordinate-validator'
-import { LongitudeValidation } from '@validation/validators/longitude-validation'
+import { CoordinateValidation } from '@validation/validators/coordinate-validation'
 import { address } from 'faker/locale/pt_BR'
 
 const mockCoordinateValidator = (): CoordinateValidator => {
@@ -12,18 +12,18 @@ const mockCoordinateValidator = (): CoordinateValidator => {
   return new CoordinateValidatorSpy()
 }
 
-type SutTypes = { sut: LongitudeValidation, coordinateValidatorSpy: CoordinateValidator}
+type SutTypes = { sut: CoordinateValidation, coordinateValidatorSpy: CoordinateValidator}
 
 const makeSut = (): SutTypes => {
   const coordinateValidatorSpy = mockCoordinateValidator()
-  const sut = new LongitudeValidation('field', coordinateValidatorSpy)
+  const sut = new CoordinateValidation('field', coordinateValidatorSpy)
   return {
     sut,
     coordinateValidatorSpy
   }
 }
 
-describe('Longitude Validation', () => {
+describe('Coordinate Validation', () => {
   test('Should be able to return a InvalidParamError if validation fails', () => {
     const { sut, coordinateValidatorSpy } = makeSut()
     jest.spyOn(coordinateValidatorSpy, 'isCoordinate').mockReturnValueOnce(false)
