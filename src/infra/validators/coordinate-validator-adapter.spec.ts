@@ -3,7 +3,7 @@ import { address } from 'faker'
 import validator from 'validator'
 
 jest.mock('validator', () => ({
-  isLatLong (): boolean {
+  isDecimal (): boolean {
     return true
   }
 }))
@@ -20,15 +20,15 @@ const makeSut = (): SutTypes => {
 describe('Coordinate Validator Adapter', () => {
   test('Should be able to call the validator with the correct value', () => {
     const { sut } = makeSut()
-    const isLatLongSpy = jest.spyOn(validator, 'isLatLong')
+    const isDecimalSpy = jest.spyOn(validator, 'isDecimal')
     const value = Number(address.latitude())
     sut.isCoordinate(value)
-    expect(isLatLongSpy).toHaveBeenCalledWith(String(value))
+    expect(isDecimalSpy).toHaveBeenCalledWith(String(value))
   })
 
   test('Should be able to return false if the validator returns false', () => {
     const { sut } = makeSut()
-    jest.spyOn(validator, 'isLatLong').mockReturnValueOnce(false)
+    jest.spyOn(validator, 'isDecimal').mockReturnValueOnce(false)
     const value = Number(address.latitude())
     const isCoordinate = sut.isCoordinate(value)
     expect(isCoordinate).toBe(false)

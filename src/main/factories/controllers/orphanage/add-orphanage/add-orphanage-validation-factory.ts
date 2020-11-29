@@ -12,6 +12,6 @@ export const makeAddOrphanageValidationFactory = (): ValidationComposite => {
   validations.push(new CoordinateValidation('longitude', new CoordinateValidatorAdapter()))
   validations.push(new DateValidation('opening_hours', new DateValidatorAdapter()))
   validations.push(new DateValidation('closing_time', new DateValidatorAdapter()))
-  validations.push(new BooleanValidation('closing_time'))
+  validations.push(new BooleanValidation('open_on_weekends'))
   return new ValidationComposite(validations)
 }

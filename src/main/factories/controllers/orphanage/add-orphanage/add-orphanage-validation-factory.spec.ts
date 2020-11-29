@@ -35,7 +35,7 @@ describe('Add Orphanage Validation Factory', () => {
     validations.push(new CoordinateValidation('longitude', mockCoordinateValidator()))
     validations.push(new DateValidation('opening_hours', mockDateValidator()))
     validations.push(new DateValidation('closing_time', mockDateValidator()))
-    validations.push(new BooleanValidation('closing_time'))
+    validations.push(new BooleanValidation('open_on_weekends'))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })

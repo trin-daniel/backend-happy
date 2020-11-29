@@ -3,7 +3,7 @@ import validator from 'validator'
 
 export class CoordinateValidatorAdapter implements CoordinateValidator {
   isCoordinate (value: number): boolean {
-    const isValid = validator.isLatLong(value.toString())
+    const isValid = validator.isDecimal(value.toString())
     return isValid
   }
 }
