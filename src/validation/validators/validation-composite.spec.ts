@@ -38,4 +38,10 @@ describe('Validation Composite', () => {
     const error = sut.validate({ field: random.word() })
     expect(error).toEqual(new Error())
   })
+
+  test('Should be able to return null on success', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ field: random.word() })
+    expect(error).toBeNull()
+  })
 })
