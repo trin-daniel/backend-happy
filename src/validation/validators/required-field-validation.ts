@@ -7,8 +7,8 @@ export class RequiredFieldValidation implements Validation {
   ) {}
 
   validate (input: object): Error | null {
-    const isFilled = input[this.fieldName]
-    if (!isFilled) {
+    const isFilled: string = input[this.fieldName]
+    if (isFilled === undefined) {
       return new MissingParamError(this.fieldName)
     }
     return null

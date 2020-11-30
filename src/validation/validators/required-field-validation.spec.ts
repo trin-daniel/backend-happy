@@ -14,8 +14,7 @@ const makeSut = (): SutTypes => {
 describe('Required Field Validation', () => {
   test('Should be able to return a MissingParamError if validation fails', () => {
     const { sut } = makeSut()
-    const data = { invalid_field: random.word() }
-    const error = sut.validate(data)
+    const error = sut.validate({})
     expect(error).toEqual(new MissingParamError('field'))
   })
 
