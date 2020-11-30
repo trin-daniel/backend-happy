@@ -1,3 +1,4 @@
+import 'module-alias/register'
 import { SqlHelper } from '@infra/database/helpers/sql-helper'
 
 SqlHelper.connect().then(async () => {
