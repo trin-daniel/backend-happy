@@ -12,7 +12,7 @@ const inputs: AddOrphanageArgs = {
   instructions: random.words(5),
   opening_hours: time.recent(),
   closing_time: time.recent(),
-  open_on_weekends: random.boolean()
+  open_on_weekends: true
 }
 
 describe('Add Orphanage Route', () => {

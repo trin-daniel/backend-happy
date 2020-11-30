@@ -1,4 +1,14 @@
-import 'module-alias/register'
+import moduleAlias from 'module-alias'
+
+moduleAlias.addAliases({
+  '@infra': `${__dirname}/../infra`,
+  '@domain': `${__dirname}/../domain`,
+  '@main': `${__dirname}/../main`,
+  '@presentation': `${__dirname}/../presentation`,
+  '@validation': `${__dirname}/../validation`,
+  '@data': `${__dirname}/../data`
+})
+
 import { SqlHelper } from '@infra/database/helpers/sql-helper'
 
 SqlHelper.connect().then(async () => {
