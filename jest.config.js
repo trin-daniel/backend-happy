@@ -7,7 +7,8 @@ module.exports = {
     '!<rootDir>/src/**/*-protocols.ts',
     '!**/protocols/**',
     '!<rootDir>/src/**/index.ts',
-    '!<rootDir>/src/main/**/*.ts'
+    '!<rootDir>/src/main/**/*.ts',
+    '!<rootDir>/src/infra/database/helpers/sql-helper.ts'
   ],
   coverageDirectory: 'coverage',
   roots: ['<rootDir>/src'],
