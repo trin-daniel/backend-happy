@@ -19,6 +19,7 @@
     "camelcase":"off",
     "no-useless-constructor":"off",
     "node/no-path-concat":"off",
-    "import/first":"off"
+    "import/first":"off",
+    "no-case-declarations":"off"
   }
 }

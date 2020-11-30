@@ -8,70 +8,79 @@ class SqlConnection {
   private client1: Pool
   private client2: Database<sqlite3.Database, sqlite3.Statement>
 
-  async connect () {
-    if (process.env.MODE === 'production') {
-      this.client1 = createPool({
-        host: process.env.HOST,
-        port: 3306,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE,
-        waitForConnections: true
-      })
-    } else {
-      const dir = existsSync(path.resolve(__dirname, '..', 'sqlite'))
-      if (!dir) {
-        mkdirSync(path.resolve(__dirname, '..', 'sqlite'))
-      }
-      this.client2 = await open({
-        driver: sqlite3.Database,
-        filename: path.resolve(__dirname, '..', 'sqlite', 'development.sqlite')
-      })
-      await this.client2.migrate({
-        migrationsPath: path.resolve(__dirname, '..', 'sql')
-      })
+  async createDir (): Promise<void> {
+    const dir = existsSync(path.resolve(__dirname, '..', 'sqlite'))
+    if (!dir) {
+      mkdirSync(path.resolve(__dirname, '..', 'sqlite'))
     }
   }
 
-  async disconnect () {
-    if (this.client1.getConnection()) {
-      await this.client1.end()
-      this.client1 = null
+  async connect (): Promise<void> {
+    switch (process.env.MODE) {
+      case 'production':
+        this.client1 = createPool({
+          host: process.env.HOST,
+          port: 3306,
+          user: process.env.MYSQL_USER,
+          password: process.env.MYSQL_PASSWORD,
+          database: process.env.MYSQL_DATABASE,
+          waitForConnections: true
+        })
+        break
+      default:
+        await this.createDir()
+        this.client2 = await open({
+          driver: sqlite3.Database,
+          filename: path.resolve(__dirname, '..', 'sqlite', 'development.sqlite')
+        })
+        await this.client2.migrate({
+          migrationsPath: path.resolve(__dirname, '..', 'sql')
+        })
+        break
     }
-    if (this.client2.getDatabaseInstance()) {
-      await this.client2.close()
-      this.client2 = null
+  }
+
+  async disconnect (): Promise<void> {
+    switch (process.env.MODE) {
+      case 'production':
+        await this.client1.end()
+        break
+      default:
+        await this.client2.close()
+        break
     }
   }
 
   async insertOne (sql: string, args?: Array<any>) {
-    if (this.client1 && process.env.MODE === 'production') {
-      const row = await this.client1.query(sql, args)
-      return row
-    }
-    if (this.client2 && !process.env.MODE) {
-      const row = await this.client2.run(sql, args)
-      return row.lastID
+    switch (process.env.MODE) {
+      case 'production':
+        const row = await this.client1.query(sql, args)
+        return row
+      default:
+        const rowDev = await this.client2.run(sql, args)
+        return rowDev
     }
   }
 
   async selectOne (sql: string, args?: Array<any>) {
-    if (this.client1 && process.env.MODE === 'production') {
-      const row = await this.client1.query(sql, args)
-      return row[0][0]
-    }
-    if (this.client2 && !process.env.MODE) {
-      const row = await this.client2.get(sql, args)
-      return row
+    switch (process.env.MODE) {
+      case 'production':
+        const row = await this.client1.query(sql, args)
+        return row[0][0]
+      default:
+        const rowDev = await this.client2.get(sql, args)
+        return rowDev
     }
   }
 
-  async delete (sql: string, args?: Array<any>) {
-    if (this.client1 && process.env.MODE === 'production') {
-      await this.client1.query(sql, args)
-    }
-    if (this.client2 && !process.env.MODE) {
-      await this.client2.run(sql, args)
+  async delete (sql: string): Promise<void> {
+    switch (process.env.MODE) {
+      case 'production':
+        await this.client1.query(sql)
+        break
+      default:
+        await this.client2.run(sql)
+        break
     }
   }
 }
