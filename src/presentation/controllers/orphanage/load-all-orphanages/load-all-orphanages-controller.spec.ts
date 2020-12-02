@@ -1,6 +1,7 @@
 import { Orphanage } from '@domain/models/orphanage'
 import { LoadAllOrphanages } from '@domain/use-cases/orphanage/load-all-orphanages'
 import { LoadAllOrphanagesController } from '@presentation/controllers/orphanage/load-all-orphanages/load-all-orphanages-controller'
+import { ok } from '@presentation/helpers/http-helpers'
 import { internet, random, time, address } from 'faker/locale/pt_BR'
 
 const mockOrphanage = [{
@@ -31,5 +32,11 @@ describe('Load All Ophanages Controller', () => {
     const loadAllSpy = jest.spyOn(loadAllOrphanagesSpy, 'loadAll')
     await sut.handle()
     expect(loadAllSpy).toHaveBeenCalled()
+  })
+  test('Should be able to return a list of orphanages if successful', async () => {
+    const loadAllOrphanagesSpy = mockLoadAllOrphanages()
+    const sut = new LoadAllOrphanagesController(loadAllOrphanagesSpy)
+    const response = await sut.handle()
+    expect(response).toEqual(ok(mockOrphanage))
   })
 })
