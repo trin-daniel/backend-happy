@@ -1,7 +1,5 @@
-import { Orphanage } from '@domain/models/orphanage'
-import { LoadAllOrphanages } from '@domain/use-cases/orphanage/load-all-orphanages'
+import { Controller, HttpResponse, LoadAllOrphanages, Orphanage } from '@presentation/controllers/orphanage/load-all-orphanages/load-all-orphanages-controller-protocols'
 import { ok, serverError } from '@presentation/helpers/http-helpers'
-import { Controller, HttpResponse } from '@presentation/protocols'
 
 export class LoadAllOrphanagesController implements Controller {
   constructor (

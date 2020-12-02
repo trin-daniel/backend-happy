@@ -1,10 +1,9 @@
-import { Orphanage } from '@domain/models/orphanage'
-import { LoadAllOrphanages } from '@domain/use-cases/orphanage/load-all-orphanages'
 import { LoadAllOrphanagesController } from '@presentation/controllers/orphanage/load-all-orphanages/load-all-orphanages-controller'
+import { LoadAllOrphanages, Orphanage } from '@presentation/controllers/orphanage/load-all-orphanages/load-all-orphanages-controller-protocols'
 import { ok, serverError } from '@presentation/helpers/http-helpers'
 import { internet, random, time, address } from 'faker/locale/pt_BR'
 
-const mockOrphanage = [{
+const mockOrphanage: Orphanage[] = [{
   id: random.uuid(),
   name: internet.userName(),
   latitude: Number(address.latitude()),
