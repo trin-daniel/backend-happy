@@ -1,6 +1,4 @@
-import { LoadAllOrphanagesRepository } from '@data/protocols/load-all-orphanages-repository'
-import { Orphanage } from '@domain/models/orphanage'
-import { LoadAllOrphanages } from '@domain/use-cases/orphanage/load-all-orphanages'
+import { Orphanage, LoadAllOrphanages, LoadAllOrphanagesRepository } from '@data/use-cases/orphanage/load-all-orphanages/db-load-all-orphanages-protocols'
 
 export class DbLoadAllOrphanages implements LoadAllOrphanages {
   constructor (
