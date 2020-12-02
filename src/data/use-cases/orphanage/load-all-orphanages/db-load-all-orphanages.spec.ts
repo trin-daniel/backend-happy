@@ -24,25 +24,33 @@ const mockLoadAllOrphanagesRepository = (): LoadAllOrphanagesRepository => {
   return new LoadAllOrphanagesRepositorySpy()
 }
 
+type SutTypes = { sut: DbLoadAllOrphanages, loadAllOrphanagesRepositorySpy: LoadAllOrphanagesRepository}
+
+const makeSut = (): SutTypes => {
+  const loadAllOrphanagesRepositorySpy = mockLoadAllOrphanagesRepository()
+  const sut = new DbLoadAllOrphanages(loadAllOrphanagesRepositorySpy)
+  return {
+    sut,
+    loadAllOrphanagesRepositorySpy
+  }
+}
+
 describe('DbLoadAllOrphanages Usecase', () => {
   test('Should be able to call LoadAllOrphanagesRepository', async () => {
-    const loadAllOrphanagesRepositorySpy = mockLoadAllOrphanagesRepository()
-    const sut = new DbLoadAllOrphanages(loadAllOrphanagesRepositorySpy)
+    const { sut, loadAllOrphanagesRepositorySpy } = makeSut()
     const loadSpy = jest.spyOn(loadAllOrphanagesRepositorySpy, 'load')
     await sut.loadAll()
     expect(loadSpy).toHaveBeenCalled()
   })
 
   test('Should be able to return a list of orphanages if successful', async () => {
-    const loadAllOrphanagesRepositorySpy = mockLoadAllOrphanagesRepository()
-    const sut = new DbLoadAllOrphanages(loadAllOrphanagesRepositorySpy)
+    const { sut } = makeSut()
     const orphanages = await sut.loadAll()
     expect(orphanages).toEqual(mockOrphanage)
   })
 
   test('Should be able to pass the exception on to the caller', async () => {
-    const loadAllOrphanagesRepositorySpy = mockLoadAllOrphanagesRepository()
-    const sut = new DbLoadAllOrphanages(loadAllOrphanagesRepositorySpy)
+    const { sut, loadAllOrphanagesRepositorySpy } = makeSut()
     jest.spyOn(loadAllOrphanagesRepositorySpy, 'load').mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.loadAll()
     expect(promise).rejects.toThrow()
