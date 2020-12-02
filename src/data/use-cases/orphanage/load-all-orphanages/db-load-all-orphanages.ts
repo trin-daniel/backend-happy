@@ -8,7 +8,7 @@ export class DbLoadAllOrphanages implements LoadAllOrphanages {
   ) {}
 
   async loadAll (): Promise<Orphanage[]> {
-    await this.loadAllOrphanagesRepository.load()
-    return Promise.resolve(null)
+    const orphanages = await this.loadAllOrphanagesRepository.load()
+    return orphanages
   }
 }
