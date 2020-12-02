@@ -39,4 +39,12 @@ describe('DbLoadAllOrphanages Usecase', () => {
     const orphanages = await sut.loadAll()
     expect(orphanages).toEqual(mockOrphanage)
   })
+
+  test('Should be able to pass the exception on to the caller', async () => {
+    const loadAllOrphanagesRepositorySpy = mockLoadAllOrphanagesRepository()
+    const sut = new DbLoadAllOrphanages(loadAllOrphanagesRepositorySpy)
+    jest.spyOn(loadAllOrphanagesRepositorySpy, 'load').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.loadAll()
+    expect(promise).rejects.toThrow()
+  })
 })
