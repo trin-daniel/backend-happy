@@ -1,5 +1,6 @@
 import { Orphanage } from '@domain/models/orphanage'
 import { LoadAllOrphanages } from '@domain/use-cases/orphanage/load-all-orphanages'
+import { ok } from '@presentation/helpers/http-helpers'
 import { Controller, HttpResponse } from '@presentation/protocols'
 
 export class LoadAllOrphanagesController implements Controller {
@@ -8,7 +9,7 @@ export class LoadAllOrphanagesController implements Controller {
   ) {}
 
   async handle (): Promise<HttpResponse<Orphanage[] | Error>> {
-    await this.loadAllOrphanages.loadAll()
-    return Promise.resolve(null)
+    const orphanages = await this.loadAllOrphanages.loadAll()
+    return ok(orphanages)
   }
 }
