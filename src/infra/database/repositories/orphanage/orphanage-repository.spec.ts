@@ -35,4 +35,10 @@ describe('Orphanage Repository', () => {
     const orphanages = await sut.load()
     expect(orphanages).toBeTruthy()
   })
+
+  test('Should be able to return an empty matrix if there is no data in the table', async () => {
+    const sut = new OrphanageRepository()
+    const orphanages = await sut.load()
+    expect(orphanages).toEqual([])
+  })
 })
