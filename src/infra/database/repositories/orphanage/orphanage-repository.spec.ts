@@ -25,4 +25,14 @@ describe('Orphanage Repository', () => {
     expect(orphanage).toBeTruthy()
     expect(orphanage.id).toBeTruthy()
   })
+
+  test('Should be able to return a list of orphanages if successful', async () => {
+    const id = random.uuid()
+    await SqlHelper.insertOne('INSERT INTO orphanages (id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends)  VALUES (?,?,?,?,?,?,?,?,?)',
+      [id, orphanageArgs.name, orphanageArgs.latitude, orphanageArgs.longitude, orphanageArgs.about, orphanageArgs.instructions, orphanageArgs.opening_hours, orphanageArgs.closing_time, orphanageArgs.open_on_weekends]
+    )
+    const sut = new OrphanageRepository()
+    const orphanages = await sut.load()
+    expect(orphanages).toBeTruthy()
+  })
 })
