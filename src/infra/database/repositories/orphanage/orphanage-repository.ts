@@ -1,10 +1,11 @@
 import { AddOrphanageRepository } from '@data/protocols/add-orphanage-repository'
+import { LoadAllOrphanagesRepository } from '@data/protocols/load-all-orphanages-repository'
 import { Orphanage } from '@domain/models/orphanage'
 import { AddOrphanageArgs } from '@domain/use-cases/orphanage/add-orphanage'
 import { SqlHelper } from '@infra/database/helpers/sql-helper'
 import { uuid } from '@infra/database/helpers/uuid-helper'
 
-export class OrphanageRepository implements AddOrphanageRepository {
+export class OrphanageRepository implements AddOrphanageRepository, LoadAllOrphanagesRepository {
   async add (data: AddOrphanageArgs): Promise<Orphanage> {
     const id = uuid.generate()
     await SqlHelper.insertOne('INSERT INTO orphanages (id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends)  VALUES (?,?,?,?,?,?,?,?,?)',
@@ -12,5 +13,10 @@ export class OrphanageRepository implements AddOrphanageRepository {
     )
     const orphanage = await SqlHelper.selectOne('SELECT  id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends FROM orphanages WHERE id = (?)', [id])
     return orphanage
+  }
+
+  async load (): Promise<Orphanage[]> {
+    const orphanages: any = await SqlHelper.selectAll('SELECT id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends FROM orphanages')
+    return orphanages
   }
 }

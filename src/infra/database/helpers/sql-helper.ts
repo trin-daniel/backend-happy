@@ -73,6 +73,17 @@ class SqlConnection {
     }
   }
 
+  async selectAll (sql: string, args?: Array<any>) {
+    switch (process.env.MODE) {
+      case 'production':
+        const row = await this.client1.query(sql, args)
+        return row[0]
+      default:
+        const rowDev = await this.client2.all(sql, args)
+        return rowDev
+    }
+  }
+
   async delete (sql: string): Promise<void> {
     switch (process.env.MODE) {
       case 'production':
