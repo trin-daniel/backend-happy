@@ -1,5 +1,6 @@
 export type HttpRequest<T> = {
-  body: T
+  body: T,
+  params?: any
 }
 
 export type HttpResponse<R> = {
