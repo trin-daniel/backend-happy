@@ -1,7 +1,7 @@
 import { Orphanage } from '@domain/models/orphanage'
 import { LoadOrphanage } from '@domain/use-cases/orphanage/load-orphanage'
 import { LoadOrphanageController } from '@presentation/controllers/orphanage/load-orphanage/load-orphanage-controller'
-import { ok } from '@presentation/helpers/http-helpers'
+import { ok, serverError } from '@presentation/helpers/http-helpers'
 import { random, internet, address } from 'faker/locale/pt_BR'
 
 const mockOrphanage = {
@@ -47,5 +47,14 @@ describe('Load Orphanage Controller', () => {
     const request = mockRequest
     const response = await sut.handle(request)
     expect(response).toEqual(ok(mockOrphanage))
+  })
+
+  test('Should be able to return an error of type 500 if LoadOrphanage fails', async () => {
+    const loadOrphanageSpy = mockLoadOrphanage()
+    const sut = new LoadOrphanageController(loadOrphanageSpy)
+    jest.spyOn(loadOrphanageSpy, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
+    const request = mockRequest
+    const response = await sut.handle(request)
+    expect(response).toEqual(serverError(new Error()))
   })
 })
