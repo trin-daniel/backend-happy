@@ -1,7 +1,7 @@
 import { AddOrphanageController } from '@presentation/controllers/orphanage/add-orphanage/add-orphanage-controller'
 import { AddOrphanage, AddOrphanageArgs, HttpRequest, Validation, Orphanage } from '@presentation/controllers/orphanage/add-orphanage/add-orphanage-controller-protocols'
 import { badRequest, ok, serverError } from '@presentation/helpers/http-helpers'
-import { address, internet, random, time } from 'faker/locale/pt_BR'
+import { address, internet, random } from 'faker/locale/pt_BR'
 
 const httpRequest: HttpRequest<AddOrphanageArgs> = {
   body:
@@ -11,8 +11,8 @@ const httpRequest: HttpRequest<AddOrphanageArgs> = {
      longitude: Number(address.longitude()),
      about: random.words(5),
      instructions: random.words(5),
-     opening_hours: time.recent(),
-     closing_time: time.recent(),
+     opening_hours: '00:38:36',
+     closing_time: '14:38:36',
      open_on_weekends: random.boolean()
    }
 }

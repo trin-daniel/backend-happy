@@ -1,7 +1,7 @@
 import { LoadAllOrphanagesController } from '@presentation/controllers/orphanage/load-all-orphanages/load-all-orphanages-controller'
 import { LoadAllOrphanages, Orphanage } from '@presentation/controllers/orphanage/load-all-orphanages/load-all-orphanages-controller-protocols'
 import { ok, serverError } from '@presentation/helpers/http-helpers'
-import { internet, random, time, address } from 'faker/locale/pt_BR'
+import { internet, random, address } from 'faker/locale/pt_BR'
 
 const mockOrphanage: Orphanage[] = [{
   id: random.uuid(),
@@ -10,8 +10,8 @@ const mockOrphanage: Orphanage[] = [{
   longitude: Number(address.longitude()),
   about: random.words(5),
   instructions: random.words(5),
-  opening_hours: time.recent(),
-  closing_time: time.recent(),
+  opening_hours: '00:38:36',
+  closing_time: '14:38:36',
   open_on_weekends: random.boolean()
 }]
 

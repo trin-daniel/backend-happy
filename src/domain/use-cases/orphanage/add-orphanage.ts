@@ -6,8 +6,8 @@ export type AddOrphanageArgs = {
   longitude: number,
   about: string,
   instructions: string,
-  opening_hours: number,
-  closing_time: number
+  opening_hours: string,
+  closing_time: string
   open_on_weekends: boolean
 }
 export interface AddOrphanage {

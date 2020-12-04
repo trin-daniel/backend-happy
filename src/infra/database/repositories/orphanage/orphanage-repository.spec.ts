@@ -1,7 +1,7 @@
 import { AddOrphanageArgs } from '@domain/use-cases/orphanage/add-orphanage'
 import { OrphanageRepository } from '@infra/database/repositories/orphanage/orphanage-repository'
 import { SqlHelper } from '@infra/database/helpers/sql-helper'
-import { internet, random, time, address } from 'faker/locale/pt_BR'
+import { internet, random, address } from 'faker/locale/pt_BR'
 
 const orphanageArgs: AddOrphanageArgs = {
   name: internet.userName(),
@@ -9,8 +9,8 @@ const orphanageArgs: AddOrphanageArgs = {
   longitude: Number(address.longitude()),
   about: random.words(5),
   instructions: random.words(5),
-  opening_hours: time.recent(),
-  closing_time: time.recent(),
+  opening_hours: '00:38:36',
+  closing_time: '14:38:36',
   open_on_weekends: random.boolean()
 }
 

@@ -17,7 +17,7 @@ const mockCoordinateValidator = (): CoordinateValidator => {
 
 const mockDateValidator = (): DateValidator => {
   class DateValidatorSpy implements DateValidator {
-    isDate (value: number): boolean {
+    isDate (value: string): boolean {
       return true
     }
   }

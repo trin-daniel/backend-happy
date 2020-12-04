@@ -5,7 +5,7 @@ import { time } from 'faker'
 
 const mockDateValidator = (): DateValidator => {
   class DateValidatorSpy implements DateValidator {
-    isDate (value: number): boolean {
+    isDate (value: string): boolean {
       return true
     }
   }

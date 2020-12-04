@@ -1,3 +1,3 @@
 export interface DateValidator {
-  isDate (value: number): boolean
+  isDate (value: string): boolean
 }
