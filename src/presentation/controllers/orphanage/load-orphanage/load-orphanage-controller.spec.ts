@@ -31,10 +31,21 @@ const mockLoadOrphanage = (): LoadOrphanage => {
   }
   return new LoadOrphanageSpy()
 }
+
+type SutTypes = { sut: LoadOrphanageController, loadOrphanageSpy: LoadOrphanage}
+
+const makeSut = (): SutTypes => {
+  const loadOrphanageSpy = mockLoadOrphanage()
+  const sut = new LoadOrphanageController(loadOrphanageSpy)
+  return {
+    sut,
+    loadOrphanageSpy
+  }
+}
+
 describe('Load Orphanage Controller', () => {
   test('Should be able to call LoadOrphanage with the correct value', async () => {
-    const loadOrphanageSpy = mockLoadOrphanage()
-    const sut = new LoadOrphanageController(loadOrphanageSpy)
+    const { sut, loadOrphanageSpy } = makeSut()
     const loadById = jest.spyOn(loadOrphanageSpy, 'loadById')
     const request = mockRequest
     await sut.handle(request)
@@ -42,16 +53,14 @@ describe('Load Orphanage Controller', () => {
   })
 
   test('Should be able to return an orphanage if successful', async () => {
-    const loadOrphanageSpy = mockLoadOrphanage()
-    const sut = new LoadOrphanageController(loadOrphanageSpy)
+    const { sut } = makeSut()
     const request = mockRequest
     const response = await sut.handle(request)
     expect(response).toEqual(ok(mockOrphanage))
   })
 
   test('Should be able to return an error of type 500 if LoadOrphanage fails', async () => {
-    const loadOrphanageSpy = mockLoadOrphanage()
-    const sut = new LoadOrphanageController(loadOrphanageSpy)
+    const { sut, loadOrphanageSpy } = makeSut()
     jest.spyOn(loadOrphanageSpy, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
     const request = mockRequest
     const response = await sut.handle(request)
