@@ -1,6 +1,7 @@
 import { Orphanage } from '@domain/models/orphanage'
 import { LoadOrphanage } from '@domain/use-cases/orphanage/load-orphanage'
 import { LoadOrphanageController } from '@presentation/controllers/orphanage/load-orphanage/load-orphanage-controller'
+import { ok } from '@presentation/helpers/http-helpers'
 import { random, internet, address } from 'faker/locale/pt_BR'
 
 const mockOrphanage = {
@@ -38,5 +39,13 @@ describe('Load Orphanage Controller', () => {
     const request = mockRequest
     await sut.handle(request)
     expect(loadById).toHaveBeenCalledWith(request.params.id)
+  })
+
+  test('Should be able to return an orphanage if successful', async () => {
+    const loadOrphanageSpy = mockLoadOrphanage()
+    const sut = new LoadOrphanageController(loadOrphanageSpy)
+    const request = mockRequest
+    const response = await sut.handle(request)
+    expect(response).toEqual(ok(mockOrphanage))
   })
 })
