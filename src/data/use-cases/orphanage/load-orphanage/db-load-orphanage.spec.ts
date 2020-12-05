@@ -24,7 +24,7 @@ const mockLoadOneOrphanageRepository = (): LoadOneOrphanageRepository => {
   return new LoadOneOrphanageRepositorySpy()
 }
 
-type SutTypes = { sut: DbLoadOrphanage, loadOneOrphanageRepositorySpy: LoadOneOrphanageRepository}
+type SutTypes = { sut: DbLoadOrphanage, loadOneOrphanageRepositorySpy: LoadOneOrphanageRepository }
 
 const makeSut = (): SutTypes => {
   const loadOneOrphanageRepositorySpy = mockLoadOneOrphanageRepository()
@@ -49,5 +49,13 @@ describe('DbLoadOrphanage Usecase', () => {
     const id = random.uuid()
     const orphanage = await sut.loadById(id)
     expect(orphanage).toEqual(mockOrphanage)
+  })
+
+  test('Should be able to pass the exception on to the caller', async () => {
+    const { sut, loadOneOrphanageRepositorySpy } = makeSut()
+    jest.spyOn(loadOneOrphanageRepositorySpy, 'loadOne').mockReturnValueOnce(Promise.reject(new Error()))
+    const id = random.uuid()
+    const promise = sut.loadById(id)
+    await expect(promise).rejects.toThrow()
   })
 })
