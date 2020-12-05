@@ -1,6 +1,5 @@
-import { Orphanage } from '@domain/models/orphanage'
-import { LoadOrphanage } from '@domain/use-cases/orphanage/load-orphanage'
 import { LoadOrphanageController } from '@presentation/controllers/orphanage/load-orphanage/load-orphanage-controller'
+import { HttpRequest, LoadOrphanage, Orphanage } from '@presentation/controllers/orphanage/load-orphanage/load-orphanage-controller-protocols'
 import { ok, serverError } from '@presentation/helpers/http-helpers'
 import { random, internet, address } from 'faker/locale/pt_BR'
 
@@ -16,7 +15,7 @@ const mockOrphanage = {
   open_on_weekends: random.boolean()
 }
 
-const mockRequest = {
+const mockRequest: HttpRequest<any> = {
   params: {
     id: random.uuid()
   },
