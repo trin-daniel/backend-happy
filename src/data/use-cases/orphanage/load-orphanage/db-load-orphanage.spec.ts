@@ -43,4 +43,11 @@ describe('DbLoadOrphanage Usecase', () => {
     await sut.loadById(id)
     expect(loadOneSpy).toHaveBeenCalledWith(id)
   })
+
+  test('Should be able to return an orphanage successfully', async () => {
+    const { sut } = makeSut()
+    const id = random.uuid()
+    const orphanage = await sut.loadById(id)
+    expect(orphanage).toEqual(mockOrphanage)
+  })
 })
