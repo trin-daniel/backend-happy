@@ -1,6 +1,5 @@
-import { LoadOneOrphanageRepository } from '@data/protocols/load-one-orphanage-repository'
 import { DbLoadOrphanage } from '@data/use-cases/orphanage/load-orphanage/db-load-orphanage'
-import { Orphanage } from '@domain/models/orphanage'
+import { LoadOneOrphanageRepository, Orphanage } from '@data/use-cases/orphanage/load-orphanage/db-load-orphanage-protocols'
 import { random, internet, address } from 'faker/locale/pt_BR'
 
 const mockOrphanage = {

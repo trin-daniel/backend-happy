@@ -1,6 +1,4 @@
-import { LoadOneOrphanageRepository } from '@data/protocols/load-one-orphanage-repository'
-import { Orphanage } from '@domain/models/orphanage'
-import { LoadOrphanage } from '@domain/use-cases/orphanage/load-orphanage'
+import { LoadOrphanage, LoadOneOrphanageRepository, Orphanage } from '@data/use-cases/orphanage/load-orphanage/db-load-orphanage-protocols'
 
 export class DbLoadOrphanage implements LoadOrphanage {
   constructor (
