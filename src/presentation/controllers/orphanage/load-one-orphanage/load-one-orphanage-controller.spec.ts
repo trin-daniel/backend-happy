@@ -1,5 +1,5 @@
-import { LoadOrphanageController } from '@presentation/controllers/orphanage/load-orphanage/load-orphanage-controller'
-import { HttpRequest, LoadOrphanage, Orphanage } from '@presentation/controllers/orphanage/load-orphanage/load-orphanage-controller-protocols'
+import { LoadOneOrphanageController } from '@presentation/controllers/orphanage/load-one-orphanage/load-one-orphanage-controller'
+import { HttpRequest, LoadOneOrphanage, Orphanage } from '@presentation/controllers/orphanage/load-one-orphanage/load-one-orphanage-controller-protocols'
 import { ok, serverError } from '@presentation/helpers/http-helpers'
 import { random, internet, address } from 'faker/locale/pt_BR'
 
@@ -22,8 +22,8 @@ const mockRequest: HttpRequest<any> = {
   body: {}
 }
 
-const mockLoadOrphanage = (): LoadOrphanage => {
-  class LoadOrphanageSpy implements LoadOrphanage {
+const mockLoadOrphanage = (): LoadOneOrphanage => {
+  class LoadOrphanageSpy implements LoadOneOrphanage {
     loadById (id: string): Promise<Orphanage> {
       return Promise.resolve(mockOrphanage)
     }
@@ -31,11 +31,11 @@ const mockLoadOrphanage = (): LoadOrphanage => {
   return new LoadOrphanageSpy()
 }
 
-type SutTypes = { sut: LoadOrphanageController, loadOrphanageSpy: LoadOrphanage}
+type SutTypes = { sut: LoadOneOrphanageController, loadOrphanageSpy: LoadOneOrphanage}
 
 const makeSut = (): SutTypes => {
   const loadOrphanageSpy = mockLoadOrphanage()
-  const sut = new LoadOrphanageController(loadOrphanageSpy)
+  const sut = new LoadOneOrphanageController(loadOrphanageSpy)
   return {
     sut,
     loadOrphanageSpy

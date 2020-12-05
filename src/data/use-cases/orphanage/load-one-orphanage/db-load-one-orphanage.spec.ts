@@ -1,5 +1,5 @@
-import { DbLoadOrphanage } from '@data/use-cases/orphanage/load-orphanage/db-load-orphanage'
-import { LoadOneOrphanageRepository, Orphanage } from '@data/use-cases/orphanage/load-orphanage/db-load-orphanage-protocols'
+import { DbLoadOneOrphanage } from '@data/use-cases/orphanage/load-one-orphanage/db-load-one-orphanage'
+import { LoadOneOrphanageRepository, Orphanage } from '@data/use-cases/orphanage/load-one-orphanage/db-load-one-orphanage-protocols'
 import { random, internet, address } from 'faker/locale/pt_BR'
 
 const mockOrphanage = {
@@ -23,18 +23,18 @@ const mockLoadOneOrphanageRepository = (): LoadOneOrphanageRepository => {
   return new LoadOneOrphanageRepositorySpy()
 }
 
-type SutTypes = { sut: DbLoadOrphanage, loadOneOrphanageRepositorySpy: LoadOneOrphanageRepository }
+type SutTypes = { sut: DbLoadOneOrphanage, loadOneOrphanageRepositorySpy: LoadOneOrphanageRepository }
 
 const makeSut = (): SutTypes => {
   const loadOneOrphanageRepositorySpy = mockLoadOneOrphanageRepository()
-  const sut = new DbLoadOrphanage(loadOneOrphanageRepositorySpy)
+  const sut = new DbLoadOneOrphanage(loadOneOrphanageRepositorySpy)
   return {
     sut,
     loadOneOrphanageRepositorySpy
   }
 }
 
-describe('DbLoadOrphanage Usecase', () => {
+describe('DbLoadOneOrphanage Usecase', () => {
   test('Should be able to call LoadOneOrphanageRepository with the correct value', async () => {
     const { sut, loadOneOrphanageRepositorySpy } = makeSut()
     const loadOneSpy = jest.spyOn(loadOneOrphanageRepositorySpy, 'loadOne')

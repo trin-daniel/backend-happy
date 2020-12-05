@@ -1,8 +1,8 @@
 import { Validation } from '@presentation/protocols'
 import { CoordinateValidator } from '@validation/protocols/coordinate-validator'
-import { ValidationComposite, BooleanValidation, CoordinateValidation, DateValidation, RequiredFieldValidation } from '@validation/validators'
+import { ValidationComposite, BooleanValidation, CoordinateValidation, RequiredFieldValidation, TimeValidation } from '@validation/validators'
 import { makeAddOrphanageValidationFactory } from '@main/factories/controllers/orphanage/add-orphanage/add-orphanage-validation-factory'
-import { DateValidator } from '@validation/protocols/date-validator'
+import { TimeValidator } from '@validation/protocols/time-validator'
 
 jest.mock('@validation/validators/validation-composite')
 
@@ -15,13 +15,13 @@ const mockCoordinateValidator = (): CoordinateValidator => {
   return new CoordinateValidatorSpy()
 }
 
-const mockDateValidator = (): DateValidator => {
-  class DateValidatorSpy implements DateValidator {
-    isDate (value: string): boolean {
+const mockTimeValidator = (): TimeValidator => {
+  class TimeValidatorSpy implements TimeValidator {
+    isTime (value: string): boolean {
       return true
     }
   }
-  return new DateValidatorSpy()
+  return new TimeValidatorSpy()
 }
 
 describe('Add Orphanage Validation Factory', () => {
@@ -33,8 +33,8 @@ describe('Add Orphanage Validation Factory', () => {
     }
     validations.push(new CoordinateValidation('latitude', mockCoordinateValidator()))
     validations.push(new CoordinateValidation('longitude', mockCoordinateValidator()))
-    validations.push(new DateValidation('opening_hours', mockDateValidator()))
-    validations.push(new DateValidation('closing_time', mockDateValidator()))
+    validations.push(new TimeValidation('opening_hours', mockTimeValidator()))
+    validations.push(new TimeValidation('closing_time', mockTimeValidator()))
     validations.push(new BooleanValidation('open_on_weekends'))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

@@ -1,8 +1,8 @@
-import { DbLoadOrphanage } from '@data/use-cases/orphanage/load-orphanage/db-load-orphanage'
-import { LoadOrphanage } from '@domain/use-cases/orphanage/load-orphanage'
+import { DbLoadOneOrphanage } from '@data/use-cases/orphanage/load-one-orphanage/db-load-one-orphanage'
+import { LoadOneOrphanage } from '@domain/use-cases/orphanage/load-one-orphanage'
 import { OrphanageRepository } from '@infra/database/repositories/orphanage/orphanage-repository'
 
-export const makeDbLoadOneOrphanage = (): LoadOrphanage => {
+export const makeDbLoadOneOrphanage = (): LoadOneOrphanage => {
   const loadOneOrphanageRepository = new OrphanageRepository()
-  return new DbLoadOrphanage(loadOneOrphanageRepository)
+  return new DbLoadOneOrphanage(loadOneOrphanageRepository)
 }
