@@ -8,7 +8,7 @@ export class DbLoadOrphanage implements LoadOrphanage {
   ) {}
 
   async loadById (id: string): Promise<Orphanage> {
-    await this.loadOneOrphanageRepository.loadOne(id)
-    return Promise.resolve(null)
+    const orphanage = await this.loadOneOrphanageRepository.loadOne(id)
+    return orphanage
   }
 }
