@@ -50,6 +50,14 @@ describe('DbLoadOrphanage Usecase', () => {
     expect(orphanage).toEqual(mockOrphanage)
   })
 
+  test('Should be able to return null if there are no orphanages with the identifier provided', async () => {
+    const { sut, loadOneOrphanageRepositorySpy } = makeSut()
+    jest.spyOn(loadOneOrphanageRepositorySpy, 'loadOne').mockReturnValueOnce(Promise.resolve(null))
+    const id = random.uuid()
+    const orphanage = await sut.loadById(id)
+    expect(orphanage).toBeNull()
+  })
+
   test('Should be able to pass the exception on to the caller', async () => {
     const { sut, loadOneOrphanageRepositorySpy } = makeSut()
     jest.spyOn(loadOneOrphanageRepositorySpy, 'loadOne').mockReturnValueOnce(Promise.reject(new Error()))
