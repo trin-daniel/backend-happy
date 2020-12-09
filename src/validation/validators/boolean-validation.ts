@@ -8,7 +8,8 @@ export class BooleanValidation implements Validation {
 
   validate (input: object): Error | null {
     const value = input[this.fieldName]
-    if (typeof value !== 'boolean') {
+    const regex = /(true|false|'true'|'false')/g
+    if (!regex.test(value)) {
       return new InvalidParamError(this.fieldName)
     }
     return null
