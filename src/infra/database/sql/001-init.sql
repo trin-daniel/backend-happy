@@ -9,3 +9,14 @@ opening_hours TIME NOT NULL,
 closing_time TIME NOT NULL, 
 open_on_weekends TINYINT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS photos(
+id VARCHAR(36) NOT NULL,
+orphanage_id VARCHAR(36) NOT NULL,
+filename VARCHAR(100) NOT NULL,  
+path VARCHAR(150) NOT NULL, 
+destination VARCHAR(200) NOT NULL, 
+mimetype VARCHAR(10) NOT NULL,
+size INT NOT NULL,
+CONSTRAINT Fk_orphanage FOREIGN KEY(orphanage_id) REFERENCES orphanages (id) ON UPDATE CASCADE ON DELETE CASCADE
+);
