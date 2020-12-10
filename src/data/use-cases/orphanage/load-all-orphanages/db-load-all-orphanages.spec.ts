@@ -1,7 +1,8 @@
 import { DbLoadAllOrphanages } from '@data/use-cases/orphanage/load-all-orphanages/db-load-all-orphanages'
-import { Orphanage, LoadAllOrphanagesRepository } from '@data/use-cases/orphanage/load-all-orphanages/db-load-all-orphanages-protocols'
-import { internet, random, address } from 'faker/locale/pt_BR'
+import { Orphanage, LoadAllOrphanagesRepository, Image } from '@data/use-cases/orphanage/load-all-orphanages/db-load-all-orphanages-protocols'
+import { internet, random, address, system } from 'faker/locale/pt_BR'
 
+const photo = (): Image => ({ id: random.uuid(), filename: system.fileName(), path: system.filePath(), destination: system.directoryPath(), mimetype: system.mimeType(), size: 256 })
 const mockOrphanage: Orphanage[] = [{
   id: random.uuid(),
   name: internet.userName(),
@@ -11,7 +12,8 @@ const mockOrphanage: Orphanage[] = [{
   instructions: random.words(5),
   opening_hours: '00:38:36',
   closing_time: '14:38:36',
-  open_on_weekends: random.boolean()
+  open_on_weekends: random.boolean(),
+  photos: [photo(), photo()]
 }]
 
 const mockLoadAllOrphanagesRepository = (): LoadAllOrphanagesRepository => {

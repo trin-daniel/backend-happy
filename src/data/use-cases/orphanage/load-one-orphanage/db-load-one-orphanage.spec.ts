@@ -1,8 +1,9 @@
 import { DbLoadOneOrphanage } from '@data/use-cases/orphanage/load-one-orphanage/db-load-one-orphanage'
-import { LoadOneOrphanageRepository, Orphanage } from '@data/use-cases/orphanage/load-one-orphanage/db-load-one-orphanage-protocols'
-import { random, internet, address } from 'faker/locale/pt_BR'
+import { LoadOneOrphanageRepository, Orphanage, Image } from '@data/use-cases/orphanage/load-one-orphanage/db-load-one-orphanage-protocols'
+import { random, internet, address, system } from 'faker/locale/pt_BR'
 
-const mockOrphanage = {
+const photo = (): Image => ({ id: random.uuid(), filename: system.fileName(), path: system.filePath(), destination: system.directoryPath(), mimetype: system.mimeType(), size: 256 })
+const mockOrphanage: Orphanage = {
   id: random.uuid(),
   name: internet.userName(),
   latitude: Number(address.latitude()),
@@ -11,7 +12,8 @@ const mockOrphanage = {
   instructions: random.words(5),
   opening_hours: '00:38:36',
   closing_time: '14:38:36',
-  open_on_weekends: random.boolean()
+  open_on_weekends: random.boolean(),
+  photos: [photo()]
 }
 
 const mockLoadOneOrphanageRepository = (): LoadOneOrphanageRepository => {
