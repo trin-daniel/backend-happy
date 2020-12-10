@@ -1,8 +1,9 @@
 import { LoadOneOrphanageController } from '@presentation/controllers/orphanage/load-one-orphanage/load-one-orphanage-controller'
-import { HttpRequest, LoadOneOrphanage, Orphanage } from '@presentation/controllers/orphanage/load-one-orphanage/load-one-orphanage-controller-protocols'
+import { HttpRequest, LoadOneOrphanage, Orphanage, Image } from '@presentation/controllers/orphanage/load-one-orphanage/load-one-orphanage-controller-protocols'
 import { ok, serverError } from '@presentation/helpers/http-helpers'
-import { random, internet, address } from 'faker/locale/pt_BR'
+import { random, internet, address, system } from 'faker/locale/pt_BR'
 
+const photo = (): Image => ({ id: random.uuid(), filename: system.fileName(), path: system.filePath(), destination: system.directoryPath(), mimetype: system.mimeType(), size: 256 })
 const mockOrphanage = {
   id: random.uuid(),
   name: internet.userName(),
@@ -12,7 +13,8 @@ const mockOrphanage = {
   instructions: random.words(5),
   opening_hours: '00:38:36',
   closing_time: '14:38:36',
-  open_on_weekends: random.boolean()
+  open_on_weekends: random.boolean(),
+  photos: [photo()]
 }
 
 const mockRequest: HttpRequest<any> = {

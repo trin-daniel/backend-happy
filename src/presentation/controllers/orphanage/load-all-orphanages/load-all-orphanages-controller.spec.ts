@@ -1,8 +1,10 @@
 import { LoadAllOrphanagesController } from '@presentation/controllers/orphanage/load-all-orphanages/load-all-orphanages-controller'
 import { LoadAllOrphanages, Orphanage } from '@presentation/controllers/orphanage/load-all-orphanages/load-all-orphanages-controller-protocols'
 import { ok, serverError } from '@presentation/helpers/http-helpers'
-import { internet, random, address } from 'faker/locale/pt_BR'
+import { internet, random, address, system } from 'faker/locale/pt_BR'
+import { Image } from '../add-orphanage/add-orphanage-controller-protocols'
 
+const photo = (): Image => ({ id: random.uuid(), filename: system.fileName(), path: system.filePath(), destination: system.directoryPath(), mimetype: system.mimeType(), size: 256 })
 const mockOrphanage: Orphanage[] = [{
   id: random.uuid(),
   name: internet.userName(),
@@ -12,7 +14,8 @@ const mockOrphanage: Orphanage[] = [{
   instructions: random.words(5),
   opening_hours: '00:38:36',
   closing_time: '14:38:36',
-  open_on_weekends: random.boolean()
+  open_on_weekends: random.boolean(),
+  photos: [photo(), photo()]
 }]
 
 const mockLoadAllOrphanages = (): LoadAllOrphanages => {
@@ -42,6 +45,7 @@ describe('Load All Ophanages Controller', () => {
     await sut.handle()
     expect(loadAllSpy).toHaveBeenCalled()
   })
+
   test('Should be able to return a list of orphanages if successful', async () => {
     const { sut } = makeSut()
     const response = await sut.handle()
