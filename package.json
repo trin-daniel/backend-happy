@@ -14,7 +14,7 @@
     "start:dev": "sucrase-node src/main/server.ts",
     "start:prod": "node dist/main/server.js",
     "docker:up": "npm run build && docker-compose up -d",
-    "docker:down":"docker-compose down"
+    "docker:down": "docker-compose down"
   },
   "keywords": [],
   "author": "Carlos Daniel",
@@ -25,7 +25,6 @@
     "@types/jest": "^26.0.15",
     "@types/module-alias": "^2.0.0",
     "@types/node": "^14.14.9",
-    "@types/sqlite3": "^3.1.6",
     "@types/supertest": "^2.0.10",
     "@types/uuid": "^8.3.0",
     "@types/validator": "^13.1.0",
@@ -54,8 +53,6 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "sqlite": "^4.0.17",
-    "sqlite3": "^5.0.0",
     "module-alias": "^2.2.2",
     "mysql2": "^2.2.5",
     "uuid": "^8.3.1",
