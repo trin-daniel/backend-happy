@@ -99,4 +99,12 @@ describe('Add Image Orphanage Controller', () => {
     const response = await sut.handle(request)
     expect(response).toEqual(serverError(new Error()))
   })
+
+  test('Should be able to return an error 500 if LoadOneOrphanage dependency fails', async () => {
+    const { sut, loadOneOrphanageSpy } = makeSut()
+    jest.spyOn(loadOneOrphanageSpy, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
+    const request = mockRequest
+    const response = await sut.handle(request)
+    expect(response).toEqual(serverError(new Error()))
+  })
 })
