@@ -9,20 +9,31 @@ import { uuid } from '@infra/database/helpers/uuid-helper'
 export class OrphanageRepository implements AddOrphanageRepository, LoadAllOrphanagesRepository, LoadOneOrphanageRepository {
   async add (data: AddOrphanageArgs): Promise<Orphanage> {
     const id = uuid.generate()
-    await SqlHelper.insertOne('INSERT INTO orphanages (id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends)  VALUES (?,?,?,?,?,?,?,?,?)',
-      [id, data.name, data.latitude, data.longitude, data.about, data.instructions, data.opening_hours, data.closing_time, data.open_on_weekends]
+    await SqlHelper.insertOne(`
+    INSERT INTO orphanages (id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends)
+    VALUES (?,?,?,?,?,?,?,?,?)`,
+    [id, data.name, data.latitude, data.longitude, data.about, data.instructions, data.opening_hours, data.closing_time, data.open_on_weekends]
     )
-    const orphanage = await SqlHelper.selectOne('SELECT  id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends FROM orphanages WHERE id = (?)', [id])
+    const orphanage = await SqlHelper.selectOne(`
+    SELECT  id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends 
+    FROM orphanages 
+    WHERE id = (?)`, [id]
+    )
     return orphanage
   }
 
   async load (): Promise<Orphanage[]> {
-    const orphanages: any = await SqlHelper.selectAll('SELECT id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends FROM orphanages')
+    const orphanages: any = await SqlHelper.selectAll(
+      `SELECT id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends 
+      FROM orphanages`
+    )
     return orphanages
   }
 
   async loadOne (id: string): Promise<Orphanage> {
-    const orphanage = await SqlHelper.selectOne('SELECT id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends FROM orphanages WHERE id = (?)', [id])
+    const orphanage = await SqlHelper.selectOne(`
+    SELECT id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends 
+    FROM orphanages WHERE id = (?)`, [id])
     return orphanage
   }
 }
