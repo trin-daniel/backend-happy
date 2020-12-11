@@ -37,10 +37,20 @@ const mockLoadOneOrphanage = (): LoadOneOrphanage => {
   return new LoadOneOrphanageSpy()
 }
 
+type SutTypes = { sut: AddImageOrphanageController, loadOneOrphanageSpy: LoadOneOrphanage }
+
+const makeSut = (): SutTypes => {
+  const loadOneOrphanageSpy = mockLoadOneOrphanage()
+  const sut = new AddImageOrphanageController(loadOneOrphanageSpy)
+  return {
+    sut,
+    loadOneOrphanageSpy
+  }
+}
+
 describe('Add Image Orphanage Controller', () => {
   test('Should be able to call LoadOneOrphanage with correct value', async () => {
-    const loadOneOrphanageSpy = mockLoadOneOrphanage()
-    const sut = new AddImageOrphanageController(loadOneOrphanageSpy)
+    const { sut, loadOneOrphanageSpy } = makeSut()
     const loadById = jest.spyOn(loadOneOrphanageSpy, 'loadById')
     const request = mockRequest
     await sut.handle(request)
@@ -48,8 +58,7 @@ describe('Add Image Orphanage Controller', () => {
   })
 
   test('Should be able to return a 404 error if there are no orphanages with the given id', async () => {
-    const loadOneOrphanageSpy = mockLoadOneOrphanage()
-    const sut = new AddImageOrphanageController(loadOneOrphanageSpy)
+    const { sut, loadOneOrphanageSpy } = makeSut()
     jest.spyOn(loadOneOrphanageSpy, 'loadById').mockReturnValueOnce(Promise.resolve(null))
     const request = mockRequest
     const response = await sut.handle(request)
