@@ -1,6 +1,6 @@
 import { AddImageOrphanageController } from '@presentation/controllers/orphanage/add-image-orphanage/add-image-orphanage-controller'
 import { HttpRequest } from '@presentation/protocols'
-import { noContent, notFound } from '@presentation/helpers/http-helpers'
+import { noContent, notFound, serverError } from '@presentation/helpers/http-helpers'
 import { InvalidRouteParamError } from '@presentation/errors'
 import { Image, Orphanage } from '@domain/models/orphanage'
 import { LoadOneOrphanage } from '@domain/use-cases/orphanage/load-one-orphanage'
@@ -90,5 +90,13 @@ describe('Add Image Orphanage Controller', () => {
     const request = mockRequest
     const response = await sut.handle(request)
     expect(response).toEqual(noContent())
+  })
+
+  test('Should be able to return an error 500 if AddImageOrphanage dependency fails', async () => {
+    const { sut, addImageOrphanageSpy } = makeSut()
+    jest.spyOn(addImageOrphanageSpy, 'add').mockReturnValueOnce(Promise.reject(new Error()))
+    const request = mockRequest
+    const response = await sut.handle(request)
+    expect(response).toEqual(serverError(new Error()))
   })
 })
