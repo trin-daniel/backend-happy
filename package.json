@@ -5,6 +5,7 @@
   "scripts": {
     "test": "jest --passWithNoTests --runInBand --silent --noStackTrace",
     "test:staged": "npm run test -- --findRelatedTests",
+    "test:verbose": "jest --passWithNoTests --runInBand --watch",
     "test:ci": "npm run test -- --coverage",
     "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
     "test:unit": "npm run test -- --watch -c jest-unit-config.js",
