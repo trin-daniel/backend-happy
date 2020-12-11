@@ -1,6 +1,6 @@
 import { AddImageOrphanageController } from '@presentation/controllers/orphanage/add-image-orphanage/add-image-orphanage-controller'
 import { HttpRequest } from '@presentation/protocols'
-import { notFound } from '@presentation/helpers/http-helpers'
+import { noContent, notFound } from '@presentation/helpers/http-helpers'
 import { InvalidRouteParamError } from '@presentation/errors'
 import { Image, Orphanage } from '@domain/models/orphanage'
 import { LoadOneOrphanage } from '@domain/use-cases/orphanage/load-one-orphanage'
@@ -83,5 +83,12 @@ describe('Add Image Orphanage Controller', () => {
     const request = mockRequest
     await sut.handle(request)
     expect(loadById).toHaveBeenCalledWith(request.files, request.params.orphanage_id)
+  })
+
+  test('Should be able to return 204 if the images were successfully sent', async () => {
+    const { sut } = makeSut()
+    const request = mockRequest
+    const response = await sut.handle(request)
+    expect(response).toEqual(noContent())
   })
 })
