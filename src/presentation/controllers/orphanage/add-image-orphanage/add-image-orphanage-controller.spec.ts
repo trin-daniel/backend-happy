@@ -1,11 +1,9 @@
 import { AddImageOrphanageController } from '@presentation/controllers/orphanage/add-image-orphanage/add-image-orphanage-controller'
-import { HttpRequest } from '@presentation/protocols'
+import { AddImageOrphanage, HttpRequest, LoadOneOrphanage } from '@presentation/controllers/orphanage/add-image-orphanage/add-image-orphanage-controller-protocols'
 import { noContent, notFound, serverError } from '@presentation/helpers/http-helpers'
 import { InvalidRouteParamError } from '@presentation/errors'
 import { Image, Orphanage } from '@domain/models/orphanage'
-import { LoadOneOrphanage } from '@domain/use-cases/orphanage/load-one-orphanage'
 import { random, system, internet, address } from 'faker/locale/pt_BR'
-import { AddImageOrphanage } from '@domain/use-cases/orphanage/add-image-orphanage'
 
 const photo = (): Image => ({ id: random.uuid(), filename: system.fileName(), path: system.filePath(), destination: system.directoryPath(), mimetype: system.mimeType(), size: 256 })
 const mockRequest: HttpRequest<any> = {

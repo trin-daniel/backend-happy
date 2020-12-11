@@ -1,13 +1,11 @@
-import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols'
-import { LoadOneOrphanage } from '@domain/use-cases/orphanage/load-one-orphanage'
-import { noContent, notFound, serverError } from '@presentation/helpers/http-helpers'
+import { AddImageOrphanage, Controller, HttpRequest, HttpResponse, LoadOneOrphanage } from '@presentation/controllers/orphanage/add-image-orphanage/add-image-orphanage-controller-protocols'
 import { InvalidRouteParamError } from '@presentation/errors'
-import { AddImageOrphanage } from '@domain/use-cases/orphanage/add-image-orphanage'
+import { noContent, notFound, serverError } from '@presentation/helpers/http-helpers'
 
 export class AddImageOrphanageController implements Controller {
   constructor (
-    private loadOneOrphanage: LoadOneOrphanage,
-    private addImageOrphanage: AddImageOrphanage
+    private readonly loadOneOrphanage: LoadOneOrphanage,
+    private readonly addImageOrphanage: AddImageOrphanage
   ) {}
 
   async handle (req: HttpRequest<any>): Promise<HttpResponse<any>> {
