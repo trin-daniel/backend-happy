@@ -1,6 +1,4 @@
-import { AddImageOrphanage } from '@domain/use-cases/orphanage/add-image-orphanage'
-import { Image } from '@domain/models/orphanage'
-import { AddImageOrphanageRepository } from '@data/protocols/add-image-orphanage-repository'
+import { AddImageOrphanage, AddImageOrphanageRepository, Image } from '@data/use-cases/orphanage/add-image-orphanage/db-add-image-orphanage-protocols'
 
 export class DbAddImageOrphanage implements AddImageOrphanage {
   constructor (

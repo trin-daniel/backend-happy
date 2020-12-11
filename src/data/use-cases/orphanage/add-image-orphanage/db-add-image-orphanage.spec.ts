@@ -1,6 +1,5 @@
-import { Image } from '@domain/models/orphanage'
 import { DbAddImageOrphanage } from '@data/use-cases/orphanage/add-image-orphanage/db-add-image-orphanage'
-import { AddImageOrphanageRepository } from '@data/protocols/add-image-orphanage-repository'
+import { AddImageOrphanageRepository, Image } from '@data/use-cases/orphanage/add-image-orphanage/db-add-image-orphanage-protocols'
 import { random, system } from 'faker/locale/pt_BR'
 
 const photo = (): Image => ({ id: random.uuid(), filename: system.fileName(), path: system.filePath(), destination: system.directoryPath(), mimetype: system.mimeType(), size: 256 })
