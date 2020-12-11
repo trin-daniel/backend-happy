@@ -1,24 +1,12 @@
-import { existsSync, mkdirSync } from 'fs'
 import { createPool, Pool } from 'mysql2/promise'
-import { open, Database } from 'sqlite'
-import sqlite3 from 'sqlite3'
-import path from 'path'
 
 class SqlConnection {
-  private client1: Pool
-  private client2: Database<sqlite3.Database, sqlite3.Statement>
-
-  async createDir (): Promise<void> {
-    const dir = existsSync(path.resolve(__dirname, '..', 'sqlite'))
-    if (!dir) {
-      mkdirSync(path.resolve(__dirname, '..', 'sqlite'))
-    }
-  }
+  private client: Pool
 
   async connect (): Promise<void> {
     switch (process.env.MODE) {
       case 'production':
-        this.client1 = createPool({
+        this.client = createPool({
           host: process.env.HOST,
           port: 3306,
           user: process.env.MYSQL_USER,
@@ -28,13 +16,13 @@ class SqlConnection {
         })
         break
       default:
-        await this.createDir()
-        this.client2 = await open({
-          driver: sqlite3.Database,
-          filename: path.resolve(__dirname, '..', 'sqlite', 'development.sqlite')
-        })
-        await this.client2.migrate({
-          migrationsPath: path.resolve(__dirname, '..', 'sql')
+        this.client = createPool({
+          host: '0.0.0.0',
+          port: 3306,
+          user: 'root',
+          password: '16503323',
+          database: 'Development',
+          waitForConnections: true
         })
         break
     }
@@ -43,10 +31,10 @@ class SqlConnection {
   async disconnect (): Promise<void> {
     switch (process.env.MODE) {
       case 'production':
-        await this.client1.end()
+        await this.client.end()
         break
       default:
-        await this.client2.close()
+        await this.client.end()
         break
     }
   }
@@ -54,10 +42,10 @@ class SqlConnection {
   async insertOne (sql: string, args?: Array<any>) {
     switch (process.env.MODE) {
       case 'production':
-        const row = await this.client1.query(sql, args)
+        const row = await this.client.query(sql, args)
         return row
       default:
-        const rowDev = await this.client2.run(sql, args)
+        const rowDev = await this.client.query(sql, args)
         return rowDev
     }
   }
@@ -65,32 +53,32 @@ class SqlConnection {
   async selectOne (sql: string, args?: Array<any>) {
     switch (process.env.MODE) {
       case 'production':
-        const row = await this.client1.query(sql, args)
+        const row = await this.client.query(sql, args)
         return row[0][0]
       default:
-        const rowDev = await this.client2.get(sql, args)
-        return rowDev
+        const rowDev = await this.client.query(sql, args)
+        return rowDev[0][0]
     }
   }
 
   async selectAll (sql: string, args?: Array<any>) {
     switch (process.env.MODE) {
       case 'production':
-        const row = await this.client1.query(sql, args)
+        const row = await this.client.query(sql, args)
         return row[0]
       default:
-        const rowDev = await this.client2.all(sql, args)
-        return rowDev
+        const rowDev = await this.client.query(sql, args)
+        return rowDev[0]
     }
   }
 
   async delete (sql: string): Promise<void> {
     switch (process.env.MODE) {
       case 'production':
-        await this.client1.query(sql)
+        await this.client.query(sql)
         break
       default:
-        await this.client2.run(sql)
+        await this.client.query(sql)
         break
     }
   }
