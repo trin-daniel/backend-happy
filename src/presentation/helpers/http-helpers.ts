@@ -8,6 +8,13 @@ export const ok = (data: object): HttpResponse<any> => {
   }
 }
 
+export const noContent = (): HttpResponse<null> => {
+  return {
+    statusCode: 204,
+    body: null
+  }
+}
+
 export const badRequest = (error: Error): HttpResponse<Error> => {
   return {
     statusCode: 400,
