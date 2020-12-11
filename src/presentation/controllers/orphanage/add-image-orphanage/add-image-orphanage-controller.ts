@@ -2,10 +2,12 @@ import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols'
 import { LoadOneOrphanage } from '@domain/use-cases/orphanage/load-one-orphanage'
 import { notFound } from '@presentation/helpers/http-helpers'
 import { InvalidRouteParamError } from '@presentation/errors'
+import { AddImageOrphanage } from '@domain/use-cases/orphanage/add-image-orphanage'
 
 export class AddImageOrphanageController implements Controller {
   constructor (
-    private loadOneOrphanage: LoadOneOrphanage
+    private loadOneOrphanage: LoadOneOrphanage,
+    private addImageOrphanage: AddImageOrphanage
   ) {}
 
   async handle (req: HttpRequest<any>): Promise<HttpResponse<any>> {
@@ -13,5 +15,6 @@ export class AddImageOrphanageController implements Controller {
     if (!orphanage) {
       return notFound(new InvalidRouteParamError('orphanage_id'))
     }
+    await this.addImageOrphanage.add(req.files, req.params.orphanage_id)
   }
 }
