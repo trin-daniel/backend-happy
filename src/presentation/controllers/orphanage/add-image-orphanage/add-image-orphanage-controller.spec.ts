@@ -1,5 +1,7 @@
 import { AddImageOrphanageController } from '@presentation/controllers/orphanage/add-image-orphanage/add-image-orphanage-controller'
 import { HttpRequest } from '@presentation/protocols'
+import { notFound } from '@presentation/helpers/http-helpers'
+import { InvalidRouteParamError } from '@presentation/errors'
 import { Image, Orphanage } from '@domain/models/orphanage'
 import { LoadOneOrphanage } from '@domain/use-cases/orphanage/load-one-orphanage'
 import { random, system, internet, address } from 'faker/locale/pt_BR'
@@ -43,5 +45,14 @@ describe('Add Image Orphanage Controller', () => {
     const request = mockRequest
     await sut.handle(request)
     expect(loadById).toHaveBeenCalledWith(request.params.orphanage_id)
+  })
+
+  test('Should be able to return a 404 error if there are no orphanages with the given id', async () => {
+    const loadOneOrphanageSpy = mockLoadOneOrphanage()
+    const sut = new AddImageOrphanageController(loadOneOrphanageSpy)
+    jest.spyOn(loadOneOrphanageSpy, 'loadById').mockReturnValueOnce(Promise.resolve(null))
+    const request = mockRequest
+    const response = await sut.handle(request)
+    expect(response).toEqual(notFound(new InvalidRouteParamError('orphanage_id')))
   })
 })
