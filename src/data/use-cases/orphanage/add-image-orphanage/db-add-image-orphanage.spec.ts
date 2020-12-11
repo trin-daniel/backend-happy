@@ -24,4 +24,13 @@ describe('DbAddImageOrphanage Usecase', () => {
     await sut.add(files, orphanage_id)
     expect(addImage).toHaveBeenCalledWith(files, orphanage_id)
   })
+
+  test('Should be able to pass the exception to the caller', async () => {
+    const addImageOrphanageRepositorySpy = mockAddImageOrphanageRepository()
+    const sut = new DbAddImageOrphanage(addImageOrphanageRepositorySpy)
+    jest.spyOn(addImageOrphanageRepositorySpy, 'addImage').mockReturnValueOnce(Promise.reject(new Error()))
+    const files = [photo(), photo()]
+    const promise = sut.add(files, orphanage_id)
+    expect(promise).rejects.toThrow()
+  })
 })
