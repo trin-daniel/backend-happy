@@ -15,10 +15,19 @@ const mockAddImageOrphanageRepository = (): AddImageOrphanageRepository => {
   return new AddImageOrphanageRepositorySpy()
 }
 
+type SutTypes = { sut: DbAddImageOrphanage, addImageOrphanageRepositorySpy: AddImageOrphanageRepository }
+
+const makeSut = (): SutTypes => {
+  const addImageOrphanageRepositorySpy = mockAddImageOrphanageRepository()
+  const sut = new DbAddImageOrphanage(addImageOrphanageRepositorySpy)
+  return {
+    sut,
+    addImageOrphanageRepositorySpy
+  }
+}
 describe('DbAddImageOrphanage Usecase', () => {
   test('Should be able to call AddImageOrphanageRepository with the correct values', async () => {
-    const addImageOrphanageRepositorySpy = mockAddImageOrphanageRepository()
-    const sut = new DbAddImageOrphanage(addImageOrphanageRepositorySpy)
+    const { sut, addImageOrphanageRepositorySpy } = makeSut()
     const addImage = jest.spyOn(addImageOrphanageRepositorySpy, 'addImage')
     const files = [photo(), photo()]
     await sut.add(files, orphanage_id)
@@ -26,8 +35,7 @@ describe('DbAddImageOrphanage Usecase', () => {
   })
 
   test('Should be able to pass the exception to the caller', async () => {
-    const addImageOrphanageRepositorySpy = mockAddImageOrphanageRepository()
-    const sut = new DbAddImageOrphanage(addImageOrphanageRepositorySpy)
+    const { sut, addImageOrphanageRepositorySpy } = makeSut()
     jest.spyOn(addImageOrphanageRepositorySpy, 'addImage').mockReturnValueOnce(Promise.reject(new Error()))
     const files = [photo(), photo()]
     const promise = sut.add(files, orphanage_id)
