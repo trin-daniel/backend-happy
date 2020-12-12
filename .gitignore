@@ -3,3 +3,4 @@ dist
 coverage
 volume
 .env
+tmp/uploads
