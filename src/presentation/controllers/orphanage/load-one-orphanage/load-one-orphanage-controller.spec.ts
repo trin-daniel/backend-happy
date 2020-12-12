@@ -26,29 +26,29 @@ const mockRequest: HttpRequest<any> = {
 }
 
 const mockLoadOrphanage = (): LoadOneOrphanage => {
-  class LoadOrphanageSpy implements LoadOneOrphanage {
+  class LoadOneOrphanageSpy implements LoadOneOrphanage {
     loadById (id: string): Promise<Orphanage> {
       return Promise.resolve(mockOrphanage)
     }
   }
-  return new LoadOrphanageSpy()
+  return new LoadOneOrphanageSpy()
 }
 
-type SutTypes = { sut: LoadOneOrphanageController, loadOrphanageSpy: LoadOneOrphanage}
+type SutTypes = { sut: LoadOneOrphanageController, loadOneOrphanageSpy: LoadOneOrphanage}
 
 const makeSut = (): SutTypes => {
-  const loadOrphanageSpy = mockLoadOrphanage()
-  const sut = new LoadOneOrphanageController(loadOrphanageSpy)
+  const loadOneOrphanageSpy = mockLoadOrphanage()
+  const sut = new LoadOneOrphanageController(loadOneOrphanageSpy)
   return {
     sut,
-    loadOrphanageSpy
+    loadOneOrphanageSpy
   }
 }
 
 describe('Load Orphanage Controller', () => {
   test('Should be able to call LoadOrphanage with the correct value', async () => {
-    const { sut, loadOrphanageSpy } = makeSut()
-    const loadById = jest.spyOn(loadOrphanageSpy, 'loadById')
+    const { sut, loadOneOrphanageSpy } = makeSut()
+    const loadById = jest.spyOn(loadOneOrphanageSpy, 'loadById')
     const request = mockRequest
     await sut.handle(request)
     expect(loadById).toHaveBeenCalledWith(request.params.id)
@@ -62,16 +62,16 @@ describe('Load Orphanage Controller', () => {
   })
 
   test('Should be able to return an error of type 500 if LoadOrphanage fails', async () => {
-    const { sut, loadOrphanageSpy } = makeSut()
-    jest.spyOn(loadOrphanageSpy, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
+    const { sut, loadOneOrphanageSpy } = makeSut()
+    jest.spyOn(loadOneOrphanageSpy, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
     const request = mockRequest
     const response = await sut.handle(request)
     expect(response).toEqual(serverError(new Error()))
   })
 
   test('Should be able to return a 404 error if the provided identifier does not exist', async () => {
-    const { sut, loadOrphanageSpy } = makeSut()
-    jest.spyOn(loadOrphanageSpy, 'loadById').mockReturnValueOnce(null)
+    const { sut, loadOneOrphanageSpy } = makeSut()
+    jest.spyOn(loadOneOrphanageSpy, 'loadById').mockReturnValueOnce(null)
     const request = mockRequest
     const response = await sut.handle(request)
     expect(response).toEqual(notFound(new InvalidRouteParamError('orphanage_id')))
