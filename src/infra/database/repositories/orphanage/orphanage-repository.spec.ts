@@ -1,8 +1,8 @@
 import { AddOrphanageArgs } from '@domain/use-cases/orphanage/add-orphanage'
+import { Image } from '@domain/models/orphanage'
 import { OrphanageRepository } from '@infra/database/repositories/orphanage/orphanage-repository'
 import { SqlHelper } from '@infra/database/helpers/sql-helper'
 import { internet, random, address, system } from 'faker/locale/pt_BR'
-import { Image } from '@domain/models/orphanage'
 
 const photo = (): Image => ({ id: random.uuid(), filename: system.fileName(), path: system.filePath(), destination: system.directoryPath(), mimetype: 'jpg', size: 256 })
 const orphanageArgs: AddOrphanageArgs = {
@@ -86,5 +86,21 @@ describe('Orphanage Repository', () => {
     const orphanage = await sut.loadOne(id)
     expect(orphanage).toBeTruthy()
     expect(orphanage.id).toBe(id)
+  })
+  test('Should be able to add images successfully', async () => {
+    const { sut } = makeSut()
+    const id = random.uuid()
+    const files = [photo(), photo()]
+    await SqlHelper.insertOne(`
+    INSERT INTO orphanages (id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends)
+    VALUES (?,?,?,?,?,?,?,?,?)`,
+    [id, orphanageArgs.name, orphanageArgs.latitude, orphanageArgs.longitude, orphanageArgs.about, orphanageArgs.instructions, orphanageArgs.opening_hours, orphanageArgs.closing_time, orphanageArgs.open_on_weekends]
+    )
+    await sut.addImage(files, id)
+    const images = await SqlHelper.selectAll(`
+    SELECT id, orphanage_id, filename, path, destination, mimetype, size
+    FROM photos
+    WHERE orphanage_id = (?)`, [id])
+    expect(images).toBeTruthy()
   })
 })
