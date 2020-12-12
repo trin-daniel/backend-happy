@@ -58,6 +58,8 @@ export class OrphanageRepository implements AddOrphanageRepository, LoadAllOrpha
     INNER JOIN photos ON orphanages.id = photos.orphanage_id 
     WHERE orphanages.id = (?)`, [id]
     )
+    if (!orphanage) { return null }
+
     const formatOrphanage: Orphanage = {
       id: orphanage.id,
       name: orphanage.name,
@@ -76,7 +78,6 @@ export class OrphanageRepository implements AddOrphanageRepository, LoadAllOrpha
         size: orphanage.size
       }]
     }
-    console.log(formatOrphanage)
-    return formatOrphanage || null
+    return formatOrphanage
   }
 }
