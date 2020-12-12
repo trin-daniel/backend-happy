@@ -1,5 +1,5 @@
 export type Image = {
-  id: string,
+  id?: string,
   filename: string,
   path: string,
   destination: string,

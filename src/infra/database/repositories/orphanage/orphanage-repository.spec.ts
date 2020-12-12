@@ -1,8 +1,10 @@
 import { AddOrphanageArgs } from '@domain/use-cases/orphanage/add-orphanage'
 import { OrphanageRepository } from '@infra/database/repositories/orphanage/orphanage-repository'
 import { SqlHelper } from '@infra/database/helpers/sql-helper'
-import { internet, random, address } from 'faker/locale/pt_BR'
+import { internet, random, address, system } from 'faker/locale/pt_BR'
+import { Image } from '@domain/models/orphanage'
 
+const photo = (): Image => ({ id: random.uuid(), filename: system.fileName(), path: system.filePath(), destination: system.directoryPath(), mimetype: 'jpg', size: 256 })
 const orphanageArgs: AddOrphanageArgs = {
   name: internet.userName(),
   latitude: Number(address.latitude()),
@@ -26,7 +28,10 @@ const makeSut = (): SutTypes => {
 describe('Orphanage Repository', () => {
   beforeAll(async () => await SqlHelper.connect())
   afterAll(async () => await SqlHelper.disconnect())
-  beforeEach(async () => await SqlHelper.delete('DELETE FROM orphanages'))
+  beforeEach(async () => {
+    await SqlHelper.delete('DELETE FROM orphanages')
+    await SqlHelper.delete('DELETE FROM photos')
+  })
 
   test('Should be able to add a new orphanage to the database', async () => {
     const { sut } = makeSut()
@@ -37,8 +42,16 @@ describe('Orphanage Repository', () => {
 
   test('Should be able to return a list of orphanages if successful', async () => {
     const id = random.uuid()
-    await SqlHelper.insertOne('INSERT INTO orphanages (id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends)  VALUES (?,?,?,?,?,?,?,?,?)',
-      [id, orphanageArgs.name, orphanageArgs.latitude, orphanageArgs.longitude, orphanageArgs.about, orphanageArgs.instructions, orphanageArgs.opening_hours, orphanageArgs.closing_time, orphanageArgs.open_on_weekends]
+    const file = photo()
+    await SqlHelper.insertOne(`
+    INSERT INTO orphanages (id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends)  
+    VALUES (?,?,?,?,?,?,?,?,?)`,
+    [id, orphanageArgs.name, orphanageArgs.latitude, orphanageArgs.longitude, orphanageArgs.about, orphanageArgs.instructions, orphanageArgs.opening_hours, orphanageArgs.closing_time, orphanageArgs.open_on_weekends]
+    )
+    await SqlHelper.insertOne(`
+    INSERT INTO photos (id, orphanage_id, filename, path, destination, mimetype, size)  
+    VALUES (?,?,?,?,?,?,?)`,
+    [file.id, id, file.filename, file.path, file.destination, file.mimetype, file.size]
     )
     const { sut } = makeSut()
     const orphanages = await sut.load()
@@ -54,8 +67,14 @@ describe('Orphanage Repository', () => {
   test('Should be able to return an orphanage if successful', async () => {
     const { sut } = makeSut()
     const id = random.uuid()
+    const file = photo()
     await SqlHelper.insertOne('INSERT INTO orphanages (id, name, latitude, longitude, about, instructions, opening_hours, closing_time, open_on_weekends)  VALUES (?,?,?,?,?,?,?,?,?)',
       [id, orphanageArgs.name, orphanageArgs.latitude, orphanageArgs.longitude, orphanageArgs.about, orphanageArgs.instructions, orphanageArgs.opening_hours, orphanageArgs.closing_time, orphanageArgs.open_on_weekends]
+    )
+    await SqlHelper.insertOne(`
+    INSERT INTO photos (id, orphanage_id, filename, path, destination, mimetype, size)  
+    VALUES (?,?,?,?,?,?,?)`,
+    [file.id, id, file.filename, file.path, file.destination, file.mimetype, file.size]
     )
     const orphanage = await sut.loadOne(id)
     expect(orphanage).toBeTruthy()
