@@ -64,6 +64,13 @@ describe('Orphanage Repository', () => {
     expect(orphanages).toEqual([])
   })
 
+  test('Should be able to return null if there are no orphanages with the provided identifier', async () => {
+    const { sut } = makeSut()
+    const id = random.uuid()
+    const orphanages = await sut.loadOne(id)
+    expect(orphanages).toBeNull()
+  })
+
   test('Should be able to return an orphanage if successful', async () => {
     const { sut } = makeSut()
     const id = random.uuid()
