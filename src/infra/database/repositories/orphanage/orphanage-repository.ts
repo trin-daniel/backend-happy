@@ -1,3 +1,4 @@
+import { AddImageOrphanageRepository } from '@data/protocols/add-image-orphanage-repository'
 import { AddOrphanageRepository } from '@data/protocols/add-orphanage-repository'
 import { LoadAllOrphanagesRepository } from '@data/protocols/load-all-orphanages-repository'
 import { LoadOneOrphanageRepository } from '@data/protocols/load-one-orphanage-repository'
@@ -6,7 +7,7 @@ import { AddOrphanageArgs } from '@domain/use-cases/orphanage/add-orphanage'
 import { SqlHelper } from '@infra/database/helpers/sql-helper'
 import { uuid } from '@infra/database/helpers/uuid-helper'
 
-export class OrphanageRepository implements AddOrphanageRepository, LoadAllOrphanagesRepository, LoadOneOrphanageRepository {
+export class OrphanageRepository implements AddOrphanageRepository, AddImageOrphanageRepository, LoadAllOrphanagesRepository, LoadOneOrphanageRepository {
   async add (data: AddOrphanageArgs): Promise<Orphanage> {
     const id = uuid.generate()
     await SqlHelper.insertOne(`
@@ -20,6 +21,18 @@ export class OrphanageRepository implements AddOrphanageRepository, LoadAllOrpha
     WHERE id = (?)`, [id]
     )
     return orphanage
+  }
+
+  async addImage (files: Image[], orphanage_id: string): Promise<void> {
+    files.forEach(async (photos) => {
+      const id = uuid.generate()
+      await SqlHelper.insertOne(`
+      INSERT INTO photos (id, orphanage_id, filename, path, destination, mimetype, size)
+      VALUES (?,?,?,?,?,?,?)`,
+      [id, orphanage_id, photos.filename, photos.path, photos.destination, photos.mimetype, photos.size]
+      )
+    })
+    return null
   }
 
   async load (): Promise<Orphanage[]> {
