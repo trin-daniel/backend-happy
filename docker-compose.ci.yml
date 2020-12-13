@@ -1,0 +1,14 @@
+version: "3.8"
+services: 
+  mysql:
+    container_name: mysql-development
+    image: mysql:8
+    environment: 
+      - MYSQL_ROOT_PASSWORD=16503323
+      - MYSQL_DATABASE=Development
+    restart: "always"
+    volumes: 
+      - './volume/mysql-dev:/var/lib/mysql'
+      - './src/infra/database/sql:/docker-entrypoint-initdb.d'
+    ports:
+    - "3306:3306"
