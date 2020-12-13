@@ -36,61 +36,78 @@ export class OrphanageRepository implements AddOrphanageRepository, AddImageOrph
   }
 
   async load (): Promise<Orphanage[]> {
-    const orphanages:any = await SqlHelper.selectAll(`
-    SELECT orphanages.id, orphanages.name, orphanages.latitude, orphanages.longitude, orphanages.about, orphanages.instructions, orphanages.opening_hours, orphanages.closing_time, orphanages.open_on_weekends, photos.filename, photos.path, photos.destination, photos.mimetype, photos.size
+    const rows: any = await SqlHelper.selectAll(
+      `SELECT
+        orphanages.id,
+        orphanages.name,
+        orphanages.latitude,
+        orphanages.longitude,
+        orphanages.about,
+        orphanages.instructions,
+        orphanages.opening_hours,
+        orphanages.closing_time,
+        orphanages.open_on_weekends,
+        IF(
+          COUNT(photos.id) = 0,
+          JSON_ARRAY(),
+          JSON_ARRAYAGG(
+            JSON_OBJECT(
+              'filename',
+              photos.filename,
+              'path',
+              photos.path,
+              'destination',
+              photos.destination,
+              'mimetype',
+              photos.mimetype,
+              'size',
+              photos.size
+            )
+          )
+        )AS photos
     FROM orphanages
-    INNER JOIN photos on orphanages.id = photos.orphanage_id
-    `)
-    const row: Orphanage = orphanages.map((orphanage: Orphanage & Image) => {
-      return {
-        id: orphanage.id,
-        name: orphanage.name,
-        latitude: orphanage.latitude,
-        longitude: orphanage.longitude,
-        about: orphanage.about,
-        instructions: orphanage.instructions,
-        opening_hours: orphanage.opening_hours,
-        closing_time: orphanage.closing_time,
-        open_on_weekends: orphanage.open_on_weekends,
-        photos: [{
-          filename: orphanage.filename,
-          path: orphanage.path,
-          destination: orphanage.destination,
-          mimetype: orphanage.mimetype,
-          size: orphanage.size
-        }]
-      }
-    })
-    return row[0] ? row[0] : []
+    INNER JOIN photos 
+    ON orphanages.id = photos.orphanage_id
+    GROUP BY orphanages.id;`
+    )
+
+    return rows[0] ? rows : []
   }
 
   async loadOne (id: string): Promise<Orphanage> {
-    const orphanage = await SqlHelper.selectOne(
-    `SELECT orphanages.id, orphanages.name, orphanages.latitude, orphanages.longitude, orphanages.about, orphanages.instructions, orphanages.opening_hours, orphanages.closing_time, orphanages.open_on_weekends, photos.filename, photos.path, photos.destination, photos.mimetype, photos.size
+    const row = await SqlHelper.selectOne(
+      `SELECT
+        orphanages.id,
+        orphanages.name,
+        orphanages.latitude,
+        orphanages.longitude,
+        orphanages.about,
+        orphanages.instructions,
+        orphanages.opening_hours,
+        orphanages.closing_time,
+        orphanages.open_on_weekends,
+        IF(
+          COUNT(photos.id) = 0,
+          JSON_ARRAY(),
+          JSON_ARRAYAGG(
+            JSON_OBJECT(
+              'filename',
+              photos.filename,
+              'path',
+              photos.path,
+              'destination',
+              photos.destination,
+              'mimetype',
+              photos.mimetype,
+              'size',
+              photos.size
+            )
+          )
+        )AS photos
     FROM orphanages
-    INNER JOIN photos ON orphanages.id = photos.orphanage_id 
-    WHERE orphanages.id = (?)`, [id]
-    )
-    if (!orphanage) { return null }
-
-    const formatOrphanage: Orphanage = {
-      id: orphanage.id,
-      name: orphanage.name,
-      latitude: orphanage.latitude,
-      longitude: orphanage.longitude,
-      about: orphanage.about,
-      instructions: orphanage.instructions,
-      opening_hours: orphanage.opening_hours,
-      closing_time: orphanage.closing_time,
-      open_on_weekends: orphanage.open_on_weekends,
-      photos: [{
-        filename: orphanage.filename,
-        path: orphanage.path,
-        destination: orphanage.destination,
-        mimetype: orphanage.mimetype,
-        size: orphanage.size
-      }]
-    }
-    return formatOrphanage
+    INNER JOIN photos 
+    ON orphanages.id = photos.orphanage_id AND orphanages.id = (?)
+    GROUP BY orphanages.id;`, [id])
+    return row || null
   }
 }
