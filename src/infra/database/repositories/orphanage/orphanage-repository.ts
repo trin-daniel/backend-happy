@@ -36,7 +36,7 @@ export class OrphanageRepository implements AddOrphanageRepository, AddImageOrph
   }
 
   async load (): Promise<Orphanage[]> {
-    const rows: any = await SqlHelper.selectAll(
+    const rows = await SqlHelper.selectAll(
       `SELECT
         orphanages.id,
         orphanages.name,
@@ -66,10 +66,10 @@ export class OrphanageRepository implements AddOrphanageRepository, AddImageOrph
           )
         )AS photos
     FROM orphanages
-    INNER JOIN photos 
+    LEFT JOIN photos 
     ON orphanages.id = photos.orphanage_id
     GROUP BY orphanages.id;`
-    )
+    ) as Orphanage[]
 
     return rows[0] ? rows : []
   }
@@ -105,9 +105,16 @@ export class OrphanageRepository implements AddOrphanageRepository, AddImageOrph
           )
         )AS photos
     FROM orphanages
-    INNER JOIN photos 
-    ON orphanages.id = photos.orphanage_id AND orphanages.id = (?)
-    GROUP BY orphanages.id;`, [id])
-    return row || null
+    INNER JOIN photos
+    ON orphanages.id = photos.orphanage_id
+    AND (orphanages.id = (?))
+    GROUP BY orphanages.id;`, [id]) as Orphanage
+    if (row === undefined) {
+      const row = await SqlHelper.selectOne(`
+      SELECT id,name,latitude,longitude,about,instructions,opening_hours,closing_time,open_on_weekends, JSON_ARRAY() as photos
+      FROM orphanages WHERE id = (?)`, [id]) as Orphanage
+      return row || null
+    }
+    return row
   }
 }
