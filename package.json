@@ -18,7 +18,7 @@
     "compose-ci":"docker-compose -f docker-compose.ci.yml up",
     "docker:down-dev":"docker-compose down"
   },
-  "keywords": [],
+  "keywords": ["api", "happy", "node"],
   "author": "Carlos Daniel",
   "license": "ISC",
   "devDependencies": {
