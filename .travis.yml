@@ -17,6 +17,6 @@ before_install:
 before_script:
   npm run compose-ci
 script:
+  - npm install
   - eslint 'src/**'
-after_script:
   - npm run test:coveralls
