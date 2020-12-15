@@ -1,86 +1,48 @@
-import { createPool, Pool } from 'mysql2/promise'
+import { createConnection, Connection } from 'mysql2/promise'
 
 class SqlConnection {
-  private client: Pool
+  private client: Connection
 
   async connect (): Promise<void> {
-    switch (process.env.MODE) {
-      case 'production':
-        this.client = createPool({
-          host: process.env.HOST,
-          port: 3306,
-          user: process.env.MYSQL_USER,
-          password: process.env.MYSQL_PASSWORD,
-          database: process.env.MYSQL_DATABASE,
-          waitForConnections: true
-        })
-        break
-      default:
-        this.client = createPool({
-          host: '0.0.0.0',
-          port: 3306,
-          user: 'root',
-          password: '16503323',
-          database: 'Development',
-          waitForConnections: true
-        })
-        break
-    }
+    this.client = await createConnection({
+      host: process.env.HOST || '0.0.0.0',
+      port: 3306,
+      user: process.env.MYSQL_USER || 'root',
+      password: process.env.MYSQL_PASSWORD || '16503323',
+      database: process.env.MYSQL_DATABASE || 'Development',
+      waitForConnections: true
+    })
   }
 
   async disconnect (): Promise<void> {
-    switch (process.env.MODE) {
-      case 'production':
-        await this.client.end()
-        break
-      default:
-        await this.client.end()
-        break
-    }
+    await this.client.end()
+    this.client = null
+  }
+
+  async isConnected () {
+    !this.client && await this.connect()
   }
 
   async insertOne (sql: string, args?: Array<any>) {
-    switch (process.env.MODE) {
-      case 'production':
-        const row = await this.client.query(sql, args)
-        return row
-      default:
-        const rowDev = await this.client.query(sql, args)
-        return rowDev
-    }
+    await this.isConnected()
+    await this.client.query(sql, args)
   }
 
   async selectOne (sql: string, args?: Array<any>) {
-    switch (process.env.MODE) {
-      case 'production':
-        const row = await this.client.query(sql, args)
-        return row[0][0]
-      default:
-        const rowDev = await this.client.query(sql, args)
-        return rowDev[0][0]
-    }
+    await this.isConnected()
+    const [row] = await this.client.query(sql, args)
+    return row[0]
   }
 
   async selectAll (sql: string, args?: Array<any>) {
-    switch (process.env.MODE) {
-      case 'production':
-        const row = await this.client.query(sql, args)
-        return row[0]
-      default:
-        const rowDev = await this.client.query(sql, args)
-        return rowDev[0]
-    }
+    await this.isConnected()
+    const [row] = await this.client.query(sql, args)
+    return row
   }
 
   async delete (sql: string): Promise<void> {
-    switch (process.env.MODE) {
-      case 'production':
-        await this.client.query(sql)
-        break
-      default:
-        await this.client.query(sql)
-        break
-    }
+    await this.isConnected()
+    await this.client.query(sql)
   }
 }
 
