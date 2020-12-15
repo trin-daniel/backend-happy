@@ -15,10 +15,10 @@
     "start:prod": "node dist/main/server.js",
     "docker:up": "npm run build && docker-compose up -d",
     "docker:down": "docker-compose down",
-    "compose-ci":"docker-compose -f docker-compose.ci.yml up",
+    "compose-ci":"docker-compose -f docker-compose.ci.yml up -d",
     "docker:down-dev":"docker-compose down"
   },
-  "keywords": [],
+  "keywords": ["api", "happy", "node"],
   "author": "Carlos Daniel",
   "license": "ISC",
   "devDependencies": {
